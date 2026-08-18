@@ -1,0 +1,1068 @@
+:root {
+    --fv-primary: #F58220;
+    --fv-primary-dark: #d96e10;
+    --fv-dark: #2F2F2F;
+    --fv-bg: #F8F9FA;
+    --fv-card: #FFFFFF;
+    --fv-text: #333333;
+    --fv-text-muted: #6B7280;
+    --fv-border: #E5E7EB;
+
+    --fv-radius: 10px;
+    --fv-radius-sm: 6px;
+    --fv-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+
+    --fv-sidebar-width: 250px;
+    --fv-navbar-height: 64px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--fv-bg);
+    color: var(--fv-text);
+    font-size: 0.925rem;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--fv-dark);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   APP SHELL
+   ========================================================= */
+
+.fv-app {
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+}
+
+.fv-sidebar {
+    width: var(--fv-sidebar-width);
+    height: 100vh;
+    background: var(--fv-card);
+    border-right: 1px solid var(--fv-border);
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 1040;
+
+    transition: transform 0.2s ease;
+
+    overflow: hidden;
+}
+
+.fv-sidebar-brand {
+    width: 100%;
+    height: var(--fv-navbar-height);
+    min-height: var(--fv-navbar-height);
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.6rem;
+
+    padding: 0 1.25rem;
+
+    border-bottom: 1px solid var(--fv-border);
+
+    flex-shrink: 0;
+}
+
+.fv-sidebar-brand-mark {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+
+    border-radius: 8px;
+
+    background: var(--fv-primary);
+    color: #fff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 700;
+    font-size: 0.9rem;
+
+    flex-shrink: 0;
+}
+
+.fv-sidebar-brand-text {
+    font-weight: 700;
+    font-size: 1.05rem;
+
+    color: var(--fv-dark);
+
+    letter-spacing: -0.01em;
+
+    white-space: nowrap;
+}
+
+.fv-sidebar-nav {
+    width: 100%;
+
+    flex: 1;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 0.9rem 0.75rem;
+}
+
+.fv-nav-section-label {
+    font-size: 0.68rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+
+    color: #9CA3AF;
+
+    padding: 0.9rem 0.6rem 0.35rem;
+}
+
+.fv-nav-item {
+    display: flex;
+    align-items: center;
+
+    gap: 0.65rem;
+
+    width: 100%;
+
+    padding: 0.55rem 0.7rem;
+
+    border-radius: var(--fv-radius-sm);
+
+    color: #4B5563;
+
+    text-decoration: none;
+
+    font-size: 0.875rem;
+
+    font-weight: 500;
+
+    margin-bottom: 2px;
+
+    transition:
+        background-color 0.12s ease,
+        color 0.12s ease;
+}
+
+.fv-nav-item i {
+    font-size: 1.05rem;
+
+    width: 20px;
+    min-width: 20px;
+
+    text-align: center;
+
+    flex-shrink: 0;
+}
+
+.fv-nav-item:hover {
+    background: #F3F4F6;
+    color: var(--fv-dark);
+}
+
+.fv-nav-item.active {
+    background: rgba(245, 130, 32, 0.10);
+
+    color: var(--fv-primary-dark);
+
+    font-weight: 600;
+}
+
+.fv-nav-item.active i {
+    color: var(--fv-primary);
+}
+
+.fv-nav-item.fv-nav-disabled {
+    color: #C1C5CB;
+
+    cursor: default;
+
+    pointer-events: none;
+}
+
+.fv-nav-sub {
+    padding-left: 1.9rem;
+}
+
+.fv-soon-badge {
+    margin-left: auto;
+
+    font-size: 0.62rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.03em;
+
+    color: #9CA3AF;
+
+    background: #F3F4F6;
+
+    border-radius: 999px;
+
+    padding: 0.15rem 0.45rem;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.fv-main {
+    width: calc(100% - var(--fv-sidebar-width));
+
+    min-width: 0;
+
+    min-height: 100vh;
+
+    margin-left: var(--fv-sidebar-width);
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.fv-navbar {
+    width: 100%;
+
+    height: var(--fv-navbar-height);
+
+    min-height: var(--fv-navbar-height);
+
+    background: var(--fv-card);
+
+    border-bottom: 1px solid var(--fv-border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 1.5rem;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1020;
+}
+
+.fv-navbar-toggle {
+    display: none;
+
+    position: relative;
+
+    z-index: 1055;
+
+    width: 42px;
+    height: 42px;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--fv-dark);
+
+    font-size: 1.5rem;
+
+    padding: 0;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    pointer-events: auto;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.fv-navbar-toggle:hover {
+    background: #F3F4F6;
+}
+
+.fv-navbar-toggle:active {
+    background: #E5E7EB;
+}
+
+.fv-navbar-title {
+    font-weight: 600;
+
+    color: var(--fv-dark);
+
+    font-size: 0.95rem;
+
+    min-width: 0;
+}
+
+.fv-navbar-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.7rem;
+
+    flex-shrink: 0;
+}
+
+.fv-avatar {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: var(--fv-dark);
+
+    color: #fff;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 600;
+
+    font-size: 0.8rem;
+
+    flex-shrink: 0;
+}
+
+.fv-user-name {
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    color: var(--fv-dark);
+
+    line-height: 1.15;
+}
+
+.fv-user-role {
+    font-size: 0.72rem;
+
+    color: var(--fv-text-muted);
+}
+
+.fv-logout-btn {
+    border: 1px solid var(--fv-border);
+
+    background: #fff;
+
+    color: var(--fv-text-muted);
+
+    border-radius: var(--fv-radius-sm);
+
+    padding: 0.4rem 0.55rem;
+
+    font-size: 1rem;
+
+    line-height: 1;
+
+    transition:
+        background-color 0.12s ease,
+        color 0.12s ease;
+
+    cursor: pointer;
+}
+
+.fv-logout-btn:hover {
+    background: #FEF2F2;
+
+    color: #DC2626;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.fv-content {
+    width: 100%;
+
+    max-width: 100%;
+
+    min-width: 0;
+
+    padding: 1.75rem;
+
+    flex: 1;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   SIDEBAR BACKDROP
+   ========================================================= */
+
+.fv-sidebar-backdrop {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.3);
+
+    z-index: 1035;
+}
+
+.fv-sidebar-backdrop.show {
+    display: block;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.fv-page-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 1rem;
+
+    margin-bottom: 1.5rem;
+}
+
+.fv-page-title {
+    font-size: 1.35rem;
+
+    font-weight: 700;
+
+    color: var(--fv-dark);
+
+    margin-bottom: 0.2rem;
+}
+
+.fv-page-subtitle {
+    color: var(--fv-text-muted);
+
+    font-size: 0.875rem;
+
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.fv-card {
+    background: var(--fv-card);
+
+    border: 1px solid var(--fv-border);
+
+    border-radius: var(--fv-radius);
+
+    box-shadow: var(--fv-shadow);
+}
+
+.fv-card .card-body {
+    padding: 1.25rem 1.35rem;
+}
+
+
+/* =========================================================
+   KPI CARDS
+   ========================================================= */
+
+.fv-kpi-card {
+    background: var(--fv-card);
+
+    border: 1px solid var(--fv-border);
+
+    border-radius: var(--fv-radius);
+
+    box-shadow: var(--fv-shadow);
+
+    padding: 1.15rem 1.25rem;
+
+    height: 100%;
+}
+
+.fv-kpi-label {
+    font-size: 0.78rem;
+
+    color: var(--fv-text-muted);
+
+    font-weight: 500;
+
+    margin-bottom: 0.5rem;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.4rem;
+}
+
+.fv-kpi-icon {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 7px;
+
+    background: rgba(245, 130, 32, 0.10);
+
+    color: var(--fv-primary);
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 0.9rem;
+}
+
+.fv-kpi-value {
+    font-size: 1.55rem;
+
+    font-weight: 700;
+
+    color: var(--fv-dark);
+
+    line-height: 1.2;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.fv-table-wrap {
+    background: var(--fv-card);
+
+    border: 1px solid var(--fv-border);
+
+    border-radius: var(--fv-radius);
+
+    box-shadow: var(--fv-shadow);
+
+    overflow: hidden;
+}
+
+.fv-table-wrap .table {
+    margin-bottom: 0;
+
+    font-size: 0.875rem;
+}
+
+.fv-table-wrap thead th {
+    background: #FAFAFA;
+
+    color: var(--fv-text-muted);
+
+    font-weight: 600;
+
+    font-size: 0.74rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.04em;
+
+    border-bottom: 1px solid var(--fv-border);
+
+    padding: 0.75rem 1rem;
+
+    white-space: nowrap;
+}
+
+.fv-table-wrap tbody td {
+    padding: 0.7rem 1rem;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid var(--fv-border);
+
+    color: var(--fv-text);
+}
+
+.fv-table-wrap tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.fv-table-wrap tbody tr:hover {
+    background: #FAFAFA;
+}
+
+.fv-table-toolbar {
+    padding: 0.9rem 1rem;
+
+    border-bottom: 1px solid var(--fv-border);
+
+    display: flex;
+
+    gap: 0.75rem;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn-fv-primary {
+    background-color: var(--fv-primary);
+
+    border-color: var(--fv-primary);
+
+    color: #fff;
+
+    font-weight: 500;
+
+    font-size: 0.85rem;
+}
+
+.btn-fv-primary:hover,
+.btn-fv-primary:focus {
+    background-color: var(--fv-primary-dark);
+
+    border-color: var(--fv-primary-dark);
+
+    color: #fff;
+}
+
+.btn-fv-secondary {
+    background-color: #fff;
+
+    border-color: var(--fv-border);
+
+    color: var(--fv-text);
+
+    font-weight: 500;
+
+    font-size: 0.85rem;
+}
+
+.btn-fv-secondary:hover {
+    background-color: #F3F4F6;
+
+    color: var(--fv-text);
+
+    border-color: var(--fv-border);
+}
+
+.btn-fv-icon {
+    width: 32px;
+    height: 32px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--fv-radius-sm);
+
+    padding: 0;
+
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   BADGES
+   ========================================================= */
+
+.fv-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 0.3rem;
+
+    padding: 0.25rem 0.6rem;
+
+    border-radius: 999px;
+
+    font-size: 0.72rem;
+
+    font-weight: 600;
+}
+
+.fv-badge-success {
+    background: #ECFDF3;
+
+    color: #027A48;
+}
+
+.fv-badge-warning {
+    background: #FFFAEB;
+
+    color: #B54708;
+}
+
+.fv-badge-danger {
+    background: #FEF3F2;
+
+    color: #B42318;
+}
+
+.fv-badge-neutral {
+    background: #F3F4F6;
+
+    color: #4B5563;
+}
+
+.fv-badge-accent {
+    background: rgba(245, 130, 32, 0.12);
+
+    color: var(--fv-primary-dark);
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.fv-form-label {
+    font-size: 0.82rem;
+
+    font-weight: 600;
+
+    color: var(--fv-dark);
+
+    margin-bottom: 0.35rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--fv-primary);
+
+    box-shadow: 0 0 0 0.2rem rgba(245, 130, 32, 0.15);
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.fv-alert {
+    border-radius: var(--fv-radius-sm);
+
+    border: 1px solid transparent;
+
+    font-size: 0.875rem;
+
+    padding: 0.7rem 1rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET / LAPTOP
+   ========================================================= */
+
+@media (max-width: 1199.98px) {
+
+    .fv-sidebar {
+        width: min(280px, 82vw);
+
+        height: 100vh;
+
+        transform: translate3d(-110%, 0, 0);
+
+        box-shadow: none;
+
+        z-index: 1040;
+
+        will-change: transform;
+    }
+
+    .fv-sidebar.fv-sidebar-open {
+        transform: translate3d(0, 0, 0);
+
+        box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .fv-main {
+        width: 100%;
+
+        min-width: 0;
+
+        min-height: 100vh;
+
+        margin-left: 0;
+    }
+
+    .fv-navbar {
+        width: 100%;
+
+        padding: 0 1rem;
+
+        position: sticky;
+
+        top: 0;
+
+        z-index: 1020;
+    }
+
+    .fv-navbar-toggle {
+        display: inline-flex;
+
+        flex-shrink: 0;
+    }
+
+    .fv-content {
+        width: 100%;
+
+        max-width: 100%;
+
+        min-width: 0;
+
+        padding: 1.25rem;
+    }
+
+    .fv-sidebar-backdrop {
+        z-index: 1035;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    body {
+        width: 100%;
+
+        min-width: 0;
+
+        overflow-x: hidden;
+    }
+
+    .fv-app {
+        display: block;
+
+        width: 100%;
+
+        min-height: 100vh;
+
+        overflow-x: hidden;
+    }
+
+    .fv-main {
+        display: flex;
+
+        flex-direction: column;
+
+        width: 100%;
+
+        min-height: 100vh;
+
+        margin-left: 0;
+    }
+
+    .fv-navbar {
+        width: 100%;
+
+        min-height: var(--fv-navbar-height);
+
+        height: auto;
+
+        padding: 0.7rem 0.85rem;
+
+        gap: 0.5rem;
+    }
+
+    .fv-navbar-toggle {
+        width: 42px;
+
+        height: 42px;
+
+        min-width: 42px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 1.5rem;
+
+        z-index: 1055;
+
+        touch-action: manipulation;
+    }
+
+    .fv-navbar-title {
+        font-size: 0.9rem;
+
+        line-height: 1.3;
+
+        flex: 1;
+
+        min-width: 0;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+    .fv-navbar-user {
+        gap: 0.4rem;
+
+        flex-shrink: 0;
+    }
+
+    .fv-user-name,
+    .fv-user-role {
+        display: none;
+    }
+
+    .fv-avatar {
+        width: 34px;
+
+        height: 34px;
+    }
+
+    .fv-content {
+        width: 100%;
+
+        max-width: 100%;
+
+        min-width: 0;
+
+        padding: 1rem;
+
+        overflow-x: hidden;
+    }
+
+    .fv-page-header {
+        margin-bottom: 1rem;
+    }
+
+    .fv-page-title {
+        font-size: 1.25rem;
+    }
+
+    .fv-page-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .fv-kpi-card {
+        padding: 1rem;
+    }
+
+    .fv-kpi-value {
+        font-size: 1.35rem;
+    }
+
+    .table-responsive {
+        width: 100%;
+
+        max-width: 100%;
+
+        overflow-x: auto;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fv-card,
+    .fv-table-wrap {
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+    .row {
+        --bs-gutter-x: 1rem;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE - SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    .fv-content {
+        padding: 0.85rem;
+    }
+
+    .fv-navbar {
+        padding: 0.65rem 0.7rem;
+    }
+
+    .fv-navbar-title {
+        font-size: 0.85rem;
+    }
+
+    .fv-sidebar {
+        width: 82vw;
+
+        max-width: 300px;
+    }
+
+    .fv-page-title {
+        font-size: 1.2rem;
+    }
+
+    .fv-card .card-body {
+        padding: 1rem;
+    }
+
+    .fv-kpi-card {
+        padding: 0.9rem;
+    }
+}
