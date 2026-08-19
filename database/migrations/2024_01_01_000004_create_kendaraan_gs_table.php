@@ -17,7 +17,6 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
-            $table->primary('id');
             $table->unique('kode_gs');
             $table->unique('plat_nomor');
             $table->unique('qr_code');

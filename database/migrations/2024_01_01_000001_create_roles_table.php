@@ -13,8 +13,7 @@ return new class extends Migration
             $table->string('nama_role', 50);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
-
-            $table->primary('id');
+            
             $table->unique('nama_role');
         });
     }

@@ -26,7 +26,6 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
             $table->timestamp('updated_at')->nullable();
 
-            $table->primary('id');
             $table->index('user_id');
             $table->index('kendaraan_operasional_id');
             $table->index('kendaraan_gs_id');

@@ -25,7 +25,6 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('updated_at')->nullable();
 
-            $table->primary('id');
             $table->unique('kode_unit');
             $table->unique('plat_nomor');
             $table->unique('qr_code');
