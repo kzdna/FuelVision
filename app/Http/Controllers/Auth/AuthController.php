@@ -35,7 +35,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended($this->redirectPathForRole($user->role?->nama_role));
+        return redirect($this->redirectPathForRole($user->role?->nama_role));
     }
 
     public function logout(): RedirectResponse
