@@ -38,8 +38,8 @@ RUN mkdir -p storage/framework/cache \
 
 RUN php artisan storage:link || true
 
-ENV SERVER_NAME=:8080
+ENV SERVER_NAME=:80
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]
