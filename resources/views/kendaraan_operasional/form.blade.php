@@ -18,6 +18,7 @@
 
 </div>
 
+
 @if ($errors->any())
 
     <div class="alert alert-danger">
@@ -53,9 +54,7 @@
             @csrf
 
             @if ($kendaraan->exists)
-
                 @method('PUT')
-
             @endif
 
 
@@ -65,10 +64,7 @@
 
                 <div class="col-md-6 mb-3">
 
-                    <label
-                        for="kode_unit"
-                        class="form-label"
-                    >
+                    <label for="kode_unit" class="form-label">
                         Kode Unit
                     </label>
 
@@ -93,10 +89,7 @@
 
                 <div class="col-md-6 mb-3">
 
-                    <label
-                        for="plat_nomor"
-                        class="form-label"
-                    >
+                    <label for="plat_nomor" class="form-label">
                         Plat Nomor
                     </label>
 
@@ -117,10 +110,7 @@
 
                 <div class="col-md-6 mb-3">
 
-                    <label
-                        for="jenis_kendaraan"
-                        class="form-label"
-                    >
+                    <label for="jenis_kendaraan" class="form-label">
                         Jenis Kendaraan
                     </label>
 
@@ -135,42 +125,22 @@
                             -- Pilih Jenis Kendaraan --
                         </option>
 
-                        <option
-                            value="Mobil Operasional"
-                            {{ old('jenis_kendaraan', $kendaraan->jenis_kendaraan) == 'Mobil Operasional' ? 'selected' : '' }}
-                        >
-                            Mobil Operasional
-                        </option>
+                        @foreach ($jenisKendaraan as $jenis)
 
-                        <option
-                            value="Pickup"
-                            {{ old('jenis_kendaraan', $kendaraan->jenis_kendaraan) == 'Pickup' ? 'selected' : '' }}
-                        >
-                            Pickup
-                        </option>
+                            <option
+                                value="{{ $jenis }}"
+                                {{ old('jenis_kendaraan', $kendaraan->jenis_kendaraan) == $jenis ? 'selected' : '' }}
+                            >
+                                {{ $jenis }}
+                            </option>
 
-                        <option
-                            value="Truck"
-                            {{ old('jenis_kendaraan', $kendaraan->jenis_kendaraan) == 'Truck' ? 'selected' : '' }}
-                        >
-                            Truck
-                        </option>
-
-                        <option
-                            value="Alat Berat"
-                            {{ old('jenis_kendaraan', $kendaraan->jenis_kendaraan) == 'Alat Berat' ? 'selected' : '' }}
-                        >
-                            Alat Berat
-                        </option>
-
-                        <option
-                            value="Kendaraan GS"
-                            {{ old('jenis_kendaraan', $kendaraan->jenis_kendaraan) == 'Kendaraan GS' ? 'selected' : '' }}
-                        >
-                            Kendaraan GS
-                        </option>
+                        @endforeach
 
                     </select>
+
+                    <div class="form-text">
+                        Jenis kendaraan mengikuti master data FuelVision.
+                    </div>
 
                 </div>
 
@@ -179,10 +149,7 @@
 
                 <div class="col-md-6 mb-3">
 
-                    <label
-                        for="departemen"
-                        class="form-label"
-                    >
+                    <label for="departemen" class="form-label">
                         Departemen
                     </label>
 
@@ -205,17 +172,24 @@
                         </option>
 
                         <option
-                            value="SparePart"
-                            {{ old('departemen', $kendaraan->departemen) == 'SparePart' ? 'selected' : '' }}
+                            value="Spare Part"
+                            {{ old('departemen', $kendaraan->departemen) == 'Spare Part' ? 'selected' : '' }}
                         >
-                            SparePart
+                            Spare Part
                         </option>
 
                         <option
-                            value="Service"
-                            {{ old('departemen', $kendaraan->departemen) == 'Service' ? 'selected' : '' }}
+                            value="Service FMC"
+                            {{ old('departemen', $kendaraan->departemen) == 'Service FMC' ? 'selected' : '' }}
                         >
-                            Service
+                            Service FMC
+                        </option>
+
+                        <option
+                            value="Service Non FMC"
+                            {{ old('departemen', $kendaraan->departemen) == 'Service Non FMC' ? 'selected' : '' }}
+                        >
+                            Service Non FMC
                         </option>
 
                     </select>
@@ -227,10 +201,7 @@
 
                 <div class="col-md-6 mb-3">
 
-                    <label
-                        for="cost_center"
-                        class="form-label"
-                    >
+                    <label for="cost_center" class="form-label">
                         Cost Center
                     </label>
 
@@ -248,7 +219,7 @@
                     </select>
 
                     <div class="form-text">
-                        Cost Center akan menyesuaikan Departemen.
+                        Cost Center akan otomatis menyesuaikan Departemen.
                     </div>
 
                 </div>
@@ -258,10 +229,7 @@
 
                 <div class="col-md-6 mb-3">
 
-                    <label
-                        for="status"
-                        class="form-label"
-                    >
+                    <label for="status" class="form-label">
                         Status
                     </label>
 
@@ -274,14 +242,20 @@
 
                         <option
                             value="1"
-                            {{ old('status', $kendaraan->exists ? (int) $kendaraan->status : 1) == 1 ? 'selected' : '' }}
+                            {{ old(
+                                'status',
+                                $kendaraan->exists ? (int) $kendaraan->status : 1
+                            ) == 1 ? 'selected' : '' }}
                         >
                             Aktif
                         </option>
 
                         <option
                             value="0"
-                            {{ old('status', $kendaraan->exists ? (int) $kendaraan->status : 1) == 0 ? 'selected' : '' }}
+                            {{ old(
+                                'status',
+                                $kendaraan->exists ? (int) $kendaraan->status : 1
+                            ) == 0 ? 'selected' : '' }}
                         >
                             Nonaktif
                         </option>
@@ -301,7 +275,9 @@
                     type="submit"
                     class="btn btn-primary"
                 >
-                    {{ $kendaraan->exists ? 'Simpan Perubahan' : 'Simpan Kendaraan' }}
+                    {{ $kendaraan->exists
+                        ? 'Simpan Perubahan'
+                        : 'Simpan Kendaraan' }}
                 </button>
 
                 <a
@@ -333,21 +309,24 @@
             }
         ],
 
-        'SparePart': [
+        'Spare Part': [
             {
                 value: '01-STI-WHS',
                 text: '01-STI-WHS'
             }
         ],
 
-        'Service': [
-            {
-                value: '01-STI-Non FMC',
-                text: '01-STI-Non FMC'
-            },
+        'Service FMC': [
             {
                 value: '01-STI-FMC',
                 text: '01-STI-FMC'
+            }
+        ],
+
+        'Service Non FMC': [
+            {
+                value: '01-STI-Non FMC',
+                text: '01-STI-Non FMC'
             }
         ]
 
@@ -363,7 +342,6 @@
 
     function updateCostCenter(selectedCostCenter = '')
     {
-
         const departemen =
             departemenSelect.value;
 
@@ -410,7 +388,6 @@
 
         costCenterSelect.disabled =
             options.length === 0;
-
     }
 
 

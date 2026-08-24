@@ -4,7 +4,8 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-start mb-4">
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+
     <div>
         <h1 class="mb-2">
             Kendaraan Operasional
@@ -22,6 +23,7 @@
         <i class="bi bi-plus-lg me-1"></i>
         Tambah Kendaraan Operasional
     </a>
+
 </div>
 
 @if (session('success'))
@@ -32,6 +34,20 @@
 
         <span>
             {{ session('success') }}
+        </span>
+
+    </div>
+
+@endif
+
+@if (session('error'))
+
+    <div class="alert alert-danger d-flex align-items-center mb-4">
+
+        <i class="bi bi-exclamation-circle me-2"></i>
+
+        <span>
+            {{ session('error') }}
         </span>
 
     </div>
@@ -62,7 +78,7 @@
 
 @endif
 
-<div class="card">
+<div class="card fv-table-card">
 
     <div class="card-body p-0">
 
@@ -88,9 +104,9 @@
 
         <div class="table-responsive">
 
-            <table class="table table-hover align-middle mb-0 fv-table">
+            <table class="table table-hover align-middle mb-0">
 
-                <thead>
+                <thead class="table-light">
 
                     <tr>
 
@@ -173,9 +189,7 @@
                                         @js($item->id),
                                         @js($item->kode_unit),
                                         @js($item->plat_nomor),
-                                        @js(route('transaksi-pengisian-bbm.create', [
-                                            'kendaraan_operasional_id' => $item->id
-                                        ]))
+                                        @js(url('/scan/qr/' . $item->qr_code))
                                     )"
                                 >
                                     <i class="bi bi-qr-code me-1"></i>
@@ -220,6 +234,7 @@
                                     >
 
                                         @csrf
+
                                         @method('DELETE')
 
                                         <button
@@ -370,70 +385,128 @@
 
 @push('scripts')
 
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script
+    src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"
+></script>
 
 <script>
 
 let currentQrUrl = '';
 
-function showQrCode(id, kodeUnit, platNomor, url) {
+function showQrCode(
+    id,
+    kodeUnit,
+    platNomor,
+    url
+) {
 
     currentQrUrl = url;
 
-    document.getElementById('qrUnit').textContent = kodeUnit;
+    document.getElementById(
+        'qrUnit'
+    ).textContent =
+        kodeUnit;
 
-    document.getElementById('qrPlat').textContent = platNomor;
+    document.getElementById(
+        'qrPlat'
+    ).textContent =
+        platNomor;
 
-    document.getElementById('qrValue').textContent = url;
+    document.getElementById(
+        'qrValue'
+    ).textContent =
+        url;
 
-    const qrContainer = document.getElementById('qrcode');
+    const qrContainer =
+        document.getElementById(
+            'qrcode'
+        );
 
     qrContainer.innerHTML = '';
 
-    new QRCode(qrContainer, {
-        text: url,
-        width: 220,
-        height: 220,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H
-    });
+    new QRCode(
+        qrContainer,
+        {
+            text: url,
+            width: 220,
+            height: 220,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel:
+                QRCode.CorrectLevel.H
+        }
+    );
 
-    const modalElement = document.getElementById('qrModal');
+    const modalElement =
+        document.getElementById(
+            'qrModal'
+        );
 
-    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    const modal =
+        bootstrap.Modal.getOrCreateInstance(
+            modalElement
+        );
 
     modal.show();
 }
 
 function downloadQrCode() {
 
-    const qrContainer = document.getElementById('qrcode');
+    const qrContainer =
+        document.getElementById(
+            'qrcode'
+        );
 
-    const canvas = qrContainer.querySelector('canvas');
+    const canvas =
+        qrContainer.querySelector(
+            'canvas'
+        );
 
     if (canvas) {
 
-        const link = document.createElement('a');
+        const link =
+            document.createElement(
+                'a'
+            );
 
-        link.download = 'QR-' + document.getElementById('qrUnit').textContent + '.png';
+        link.download =
+            'QR-' +
+            document.getElementById(
+                'qrUnit'
+            ).textContent +
+            '.png';
 
-        link.href = canvas.toDataURL('image/png');
+        link.href =
+            canvas.toDataURL(
+                'image/png'
+            );
 
         link.click();
 
         return;
     }
 
-    const image = qrContainer.querySelector('img');
+    const image =
+        qrContainer.querySelector(
+            'img'
+        );
 
     if (image) {
 
-        const link = document.createElement('a');
+        const link =
+            document.createElement(
+                'a'
+            );
 
-        link.download = 'QR-' + document.getElementById('qrUnit').textContent + '.png';
+        link.download =
+            'QR-' +
+            document.getElementById(
+                'qrUnit'
+            ).textContent +
+            '.png';
 
-        link.href = image.src;
+        link.href =
+            image.src;
 
         link.click();
     }

@@ -7,6 +7,7 @@
 <div class="container-fluid">
 
     <div class="mb-4">
+
         <h2>
             {{ $kendaraan->exists ? 'Edit Kendaraan GS' : 'Tambah Kendaraan GS' }}
         </h2>
@@ -16,21 +17,33 @@
                 ? 'Perbarui data kendaraan GS.'
                 : 'Tambahkan data kendaraan GS baru.' }}
         </p>
+
     </div>
 
     @if ($errors->any())
+
         <div class="alert alert-danger">
+
             <strong>Terdapat kesalahan:</strong>
 
             <ul class="mb-0 mt-2">
+
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+
+                    <li>
+                        {{ $error }}
+                    </li>
+
                 @endforeach
+
             </ul>
+
         </div>
+
     @endif
 
     <div class="card">
+
         <div class="card-body">
 
             <form
@@ -43,13 +56,19 @@
                 @csrf
 
                 @if ($kendaraan->exists)
+
                     @method('PUT')
+
                 @endif
 
                 <div class="row">
 
                     <div class="col-md-6 mb-3">
-                        <label for="kode_gs" class="form-label">
+
+                        <label
+                            for="kode_gs"
+                            class="form-label"
+                        >
                             Kode GS
                         </label>
 
@@ -69,10 +88,15 @@
                         >
                             Masukkan kode kendaraan GS.
                         </div>
+
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="plat_nomor" class="form-label">
+
+                        <label
+                            for="plat_nomor"
+                            class="form-label"
+                        >
                             Plat Nomor
                         </label>
 
@@ -91,10 +115,15 @@
                         >
                             Plat nomor wajib diisi untuk kendaraan GS biasa.
                         </div>
+
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="status" class="form-label">
+
+                        <label
+                            for="status"
+                            class="form-label"
+                        >
                             Status
                         </label>
 
@@ -104,6 +133,7 @@
                             class="form-select"
                             required
                         >
+
                             <option
                                 value="1"
                                 {{ old('status', $kendaraan->exists ? (int) $kendaraan->status : 1) == 1 ? 'selected' : '' }}
@@ -117,7 +147,9 @@
                             >
                                 Nonaktif
                             </option>
+
                         </select>
+
                     </div>
 
                 </div>
@@ -126,14 +158,21 @@
                     id="gsUmumInfo"
                     class="alert alert-info mt-2 d-none"
                 >
+
                     <strong>GS Umum</strong>
+
                     <br>
+
                     Data ini digunakan untuk kendaraan GS yang belum memiliki
                     identitas kendaraan atau kode unit spesifik.
+
                     <br>
+
                     QR Code akan otomatis menggunakan kode
                     <strong>GS_GENERAL</strong>.
+
                     Plat nomor tidak diperlukan.
+
                 </div>
 
                 <div class="d-flex gap-2 mt-3">
@@ -157,11 +196,13 @@
             </form>
 
         </div>
+
     </div>
 
 </div>
 
 <script>
+
 document.addEventListener('DOMContentLoaded', function () {
 
     const kodeGsInput = document.getElementById('kode_gs');
@@ -212,15 +253,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Plat nomor wajib diisi untuk kendaraan GS biasa.';
 
             gsUmumInfo.classList.add('d-none');
+
         }
+
     }
 
-    kodeGsInput.addEventListener('input', updateGsForm);
+    kodeGsInput.addEventListener(
+        'input',
+        updateGsForm
+    );
 
-    kodeGsInput.addEventListener('change', updateGsForm);
+    kodeGsInput.addEventListener(
+        'change',
+        updateGsForm
+    );
 
     updateGsForm();
+
 });
+
 </script>
 
 @endsection

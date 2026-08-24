@@ -9,6 +9,7 @@ use App\Http\Controllers\TransaksiPengisianBbmController;
 use App\Http\Controllers\ScanQrController;
 use App\Http\Controllers\MonitoringMingguanController;
 use App\Http\Controllers\MonitoringBulananController;
+use App\Http\Controllers\StandarKonsumsiBbmController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -52,6 +53,20 @@ Route::middleware('auth')->group(function () {
                 'master-harga-bbm-vendor' => 'masterHargaBbmVendor',
             ]);
 
+        Route::resource(
+            'standar-konsumsi-bbm',
+            StandarKonsumsiBbmController::class
+        )
+            ->except([
+                'create',
+                'store',
+                'show',
+                'destroy',
+            ])
+            ->parameters([
+                'standar-konsumsi-bbm' => 'id',
+            ]);
+
         Route::get(
             '/transaksi-pengisian-bbm',
             [TransaksiPengisianBbmController::class, 'index']
@@ -91,18 +106,23 @@ Route::middleware('auth')->group(function () {
             '/monitoring/bulanan/pdf',
             [MonitoringBulananController::class, 'downloadPdf']
         )->name('monitoring.bulanan.pdf');
-
-        Route::get(
-            '/scan',
-            [ScanQrController::class, 'index']
-        )->name('scan.index');
-
-        Route::post(
-            '/scan/find',
-            [ScanQrController::class, 'find']
-        )->name('scan.find');
     });
 });
+
+Route::get(
+    '/scan',
+    [ScanQrController::class, 'index']
+)->name('scan.index');
+
+Route::post(
+    '/scan/find',
+    [ScanQrController::class, 'find']
+)->name('scan.find');
+
+Route::get(
+    '/scan/qr/{qrCode}',
+    [ScanQrController::class, 'redirectFromQr']
+)->name('scan.qr');
 
 Route::get(
     '/transaksi-pengisian-bbm/create',

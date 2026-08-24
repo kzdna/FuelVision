@@ -113,6 +113,14 @@
                     <span>Harga BBM Vendor</span>
                 </a>
 
+                <a
+                    href="{{ route('standar-konsumsi-bbm.index') }}"
+                    class="fv-nav-item {{ request()->routeIs('standar-konsumsi-bbm.*') ? 'active' : '' }}"
+                >
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Standar Konsumsi BBM</span>
+                </a>
+
             @endif
 
         @endif

@@ -27,8 +27,63 @@ class ScanQrController extends Controller
             ],
         ]);
 
-        $qrCode = trim($validated['qr_code']);
+        return $this->processQrCode(
+            trim($validated['qr_code'])
+        );
+    }
 
+    public function redirectFromQr(string $qrCode)
+    {
+        $qrCode = trim($qrCode);
+
+        $kendaraanOperasional = KendaraanOperasional::where(
+            'qr_code',
+            $qrCode
+        )->first();
+
+        if ($kendaraanOperasional) {
+            if (! $kendaraanOperasional->status) {
+                abort(422, 'Kendaraan operasional tidak aktif.');
+            }
+
+            return redirect()->route(
+                'transaksi-pengisian-bbm.create',
+                [
+                    'jenis_kendaraan' => 'operasional',
+                    'kendaraan_operasional_id' =>
+                        $kendaraanOperasional->id,
+                ]
+            );
+        }
+
+        $kendaraanGs = KendaraanGs::where(
+            'qr_code',
+            $qrCode
+        )->first();
+
+        if ($kendaraanGs) {
+            if (! $kendaraanGs->status) {
+                abort(422, 'Kendaraan GS tidak aktif.');
+            }
+
+            return redirect()->route(
+                'transaksi-pengisian-bbm.create',
+                [
+                    'jenis_kendaraan' => 'gs',
+                    'kendaraan_gs_id' =>
+                        $kendaraanGs->id,
+                ]
+            );
+        }
+
+        abort(
+            404,
+            'QR Code tidak terdaftar pada kendaraan operasional maupun kendaraan GS.'
+        );
+    }
+
+    private function processQrCode(string $qrCode): JsonResponse
+    {
         $kendaraanOperasional = KendaraanOperasional::where(
             'qr_code',
             $qrCode

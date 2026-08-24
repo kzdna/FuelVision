@@ -7,6 +7,7 @@
 <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
 
     <div>
+
         <h1 class="mb-2">
             Kendaraan GS
         </h1>
@@ -14,6 +15,7 @@
         <p class="text-muted mb-0">
             Kelola data kendaraan GS FuelVision.
         </p>
+
     </div>
 
     <a
@@ -78,7 +80,6 @@
 
 @endif
 
-
 <div class="card fv-table-card">
 
     <div class="card-body p-0">
@@ -88,11 +89,11 @@
             <div>
 
                 <h5 class="mb-1">
-                    Data Kendaraan
+                    Data Kendaraan GS
                 </h5>
 
                 <p class="text-muted mb-0 small">
-                    Daftar kendaraan GS dan QR pengisian BBM yang terdaftar.
+                    Daftar kendaraan GS yang terdaftar.
                 </p>
 
             </div>
@@ -102,7 +103,6 @@
             </span>
 
         </div>
-
 
         <div class="table-responsive">
 
@@ -140,7 +140,6 @@
 
                 </thead>
 
-
                 <tbody>
 
                     @forelse ($kendaraan as $item)
@@ -148,10 +147,17 @@
                         @php
 
                             $isGsUmum =
-                                $item->kode_gs === 'GS-UMUM';
+                                $item->kode_gs === 'GS-UMUM' ||
+                                $item->qr_code === 'GS_GENERAL';
+
+                            $qrUrl = route(
+                                'scan.qr',
+                                [
+                                    'qrCode' => $item->qr_code,
+                                ]
+                            );
 
                         @endphp
-
 
                         <tr>
 
@@ -159,71 +165,33 @@
                                 {{ $loop->iteration }}
                             </td>
 
-
                             <td class="fw-semibold">
-
                                 {{ $item->kode_gs }}
-
-                                @if ($isGsUmum)
-
-                                    <span class="badge bg-info text-dark ms-1">
-                                        GS Umum
-                                    </span>
-
-                                @endif
-
                             </td>
 
+                            <td>
+                                {{ $item->plat_nomor ?: '-' }}
+                            </td>
 
                             <td>
 
-                                @if ($isGsUmum)
-
-                                    <span class="text-muted">
-                                        Tidak ditentukan
-                                    </span>
-
-                                @else
-
-                                    {{ $item->plat_nomor }}
-
-                                @endif
-
-                            </td>
-
-
-                            <td>
-
-                                @if ($item->status)
-
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-info text-white"
-                                        onclick="showGsQrCode(
-                                            @js($item->id),
-                                            @js($item->kode_gs),
-                                            @js($item->plat_nomor),
-                                            @js($item->qr_code),
-                                            @js($isGsUmum)
-                                        )"
-                                    >
-
-                                        <i class="bi bi-qr-code me-1"></i>
-
-                                        Lihat QR
-
-                                    </button>
-
-                                @else
-
-                                    <span class="text-muted">
-                                        Tidak aktif
-                                    </span>
-
-                                @endif
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-info text-white"
+                                    onclick="showGsQrCode(
+                                        @js($item->id),
+                                        @js($item->kode_gs),
+                                        @js($item->plat_nomor),
+                                        @js($item->qr_code),
+                                        @js($isGsUmum),
+                                        @js($qrUrl)
+                                    )"
+                                >
+                                    <i class="bi bi-qr-code me-1"></i>
+                                    Lihat QR
+                                </button>
 
                             </td>
-
 
                             <td>
 
@@ -243,7 +211,6 @@
 
                             </td>
 
-
                             <td>
 
                                 <div class="d-flex gap-1">
@@ -251,44 +218,34 @@
                                     <a
                                         href="{{ route('kendaraan-gs.edit', $item) }}"
                                         class="btn btn-sm btn-warning"
-                                        title="Edit"
                                     >
                                         <i class="bi bi-pencil"></i>
                                     </a>
 
+                                    <form
+                                        action="{{ route('kendaraan-gs.destroy', $item) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus kendaraan GS ini?')"
+                                    >
 
-                                    @if (!$isGsUmum)
+                                        @csrf
 
-                                        <form
-                                            action="{{ route('kendaraan-gs.destroy', $item) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus kendaraan GS ini?')"
+                                        @method('DELETE')
+
+                                        <button
+                                            type="submit"
+                                            class="btn btn-sm btn-danger"
                                         >
+                                            <i class="bi bi-trash"></i>
+                                        </button>
 
-                                            @csrf
-
-                                            @method('DELETE')
-
-                                            <button
-                                                type="submit"
-                                                class="btn btn-sm btn-danger"
-                                                title="Hapus"
-                                            >
-
-                                                <i class="bi bi-trash"></i>
-
-                                            </button>
-
-                                        </form>
-
-                                    @endif
+                                    </form>
 
                                 </div>
 
                             </td>
 
                         </tr>
-
 
                     @empty
 
@@ -328,11 +285,6 @@
 
 </div>
 
-
-{{-- ========================================================= --}}
-{{-- MODAL QR CODE --}}
-{{-- ========================================================= --}}
-
 <div
     class="modal fade"
     id="gsQrModal"
@@ -363,7 +315,6 @@
 
             </div>
 
-
             <div class="modal-body text-center">
 
                 <h5
@@ -371,40 +322,32 @@
                     class="mb-1"
                 ></h5>
 
-
                 <p
                     id="gsQrPlat"
                     class="text-muted mb-3"
                 ></p>
-
 
                 <div
                     id="gsQrcode"
                     class="d-flex justify-content-center"
                 ></div>
 
-
                 <p
                     id="gsQrDescription"
                     class="mt-3 mb-1"
                 ></p>
-
 
                 <p class="mb-0">
 
                     <small
                         id="gsQrValue"
                         class="text-muted"
-                        style="
-                            word-break: break-all;
-                            font-size: 11px;
-                        "
+                        style="word-break: break-all;"
                     ></small>
 
                 </p>
 
             </div>
-
 
             <div class="modal-footer">
 
@@ -416,17 +359,13 @@
                     Tutup
                 </button>
 
-
                 <button
                     type="button"
                     class="btn btn-primary"
                     onclick="downloadGsQrCode()"
                 >
-
                     <i class="bi bi-download me-1"></i>
-
                     Download QR
-
                 </button>
 
             </div>
@@ -439,215 +378,95 @@
 
 @endsection
 
-
 @push('scripts')
 
 <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+    src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"
 ></script>
 
-
 <script>
-
-/*
-|--------------------------------------------------------------------------
-| URL FORM PENGISIAN BBM
-|--------------------------------------------------------------------------
-|
-| URL ini dibuat Laravel.
-|
-| Contoh hasil:
-|
-| http://192.168.1.17:8000/transaksi-pengisian-bbm/create
-|
-*/
-
-const formPengisianBbmUrl =
-    @json(
-        route('transaksi-pengisian-bbm.create')
-    );
-
 
 let currentGsQrValue = '';
 
 let currentGsQrIsGeneral = false;
-
-
-/*
-|--------------------------------------------------------------------------
-| TAMPILKAN QR CODE
-|--------------------------------------------------------------------------
-*/
 
 function showGsQrCode(
     id,
     kodeGs,
     platNomor,
     qrCode,
-    isGsUmum
+    isGsUmum,
+    qrUrl
 ) {
 
     currentGsQrIsGeneral =
         isGsUmum;
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | BUAT URL QR
-    |--------------------------------------------------------------------------
-    |
-    | Sekarang QR TIDAK LAGI berisi:
-    |
-    | GS_GENERAL
-    |
-    | Tetapi berisi URL lengkap ke form.
-    |
-    */
-
-    const params =
-        new URLSearchParams({
-
-            jenis_kendaraan: 'gs',
-
-            kendaraan_gs_id: id
-
-        });
-
-
-    const qrValue =
-        formPengisianBbmUrl +
-        '?' +
-        params.toString();
-
-
     currentGsQrValue =
-        qrValue;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | JUDUL
-    |--------------------------------------------------------------------------
-    */
+        qrUrl;
 
     document.getElementById(
         'gsQrUnit'
     ).textContent =
-
         isGsUmum
             ? 'GS-UMUM'
             : kodeGs;
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | PLAT
-    |--------------------------------------------------------------------------
-    */
-
     document.getElementById(
         'gsQrPlat'
     ).textContent =
-
         isGsUmum
             ? 'Kendaraan GS Umum'
-            : (platNomor || '-');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | TAMPILKAN URL
-    |--------------------------------------------------------------------------
-    */
+            : (
+                platNomor ||
+                '-'
+            );
 
     document.getElementById(
         'gsQrValue'
     ).textContent =
-
-        qrValue;
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | DESKRIPSI
-    |--------------------------------------------------------------------------
-    */
+        qrUrl;
 
     document.getElementById(
         'gsQrDescription'
     ).textContent =
-
         isGsUmum
-
             ? 'Scan QR ini untuk membuka form pengisian BBM kendaraan GS umum.'
-
             : 'Scan QR ini untuk membuka form pengisian BBM kendaraan GS.';
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | GENERATE QR
-    |--------------------------------------------------------------------------
-    */
 
     const qrContainer =
         document.getElementById(
             'gsQrcode'
         );
 
-
-    qrContainer.innerHTML = '';
-
+    qrContainer.innerHTML =
+        '';
 
     new QRCode(
         qrContainer,
         {
-
-            text: qrValue,
-
+            text: qrUrl,
             width: 300,
-
             height: 300,
-
             colorDark: '#000000',
-
             colorLight: '#ffffff',
-
             correctLevel:
                 QRCode.CorrectLevel.H
-
         }
     );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | TAMPILKAN MODAL
-    |--------------------------------------------------------------------------
-    */
 
     const modalElement =
         document.getElementById(
             'gsQrModal'
         );
 
-
     const modal =
         bootstrap.Modal.getOrCreateInstance(
             modalElement
         );
 
-
     modal.show();
-
 }
-
-
-/*
-|--------------------------------------------------------------------------
-| DOWNLOAD QR
-|--------------------------------------------------------------------------
-*/
 
 function downloadGsQrCode() {
 
@@ -656,12 +475,10 @@ function downloadGsQrCode() {
             'gsQrcode'
         );
 
-
     const canvas =
         qrContainer.querySelector(
             'canvas'
         );
-
 
     if (!canvas) {
 
@@ -670,37 +487,33 @@ function downloadGsQrCode() {
         );
 
         return;
-
     }
-
 
     const kodeGs =
         document.getElementById(
             'gsQrUnit'
         ).textContent;
 
-
     const platNomor =
         document.getElementById(
             'gsQrPlat'
         ).textContent;
 
+    const padding =
+        40;
 
-    const padding = 40;
+    const titleHeight =
+        90;
 
-    const titleHeight = 90;
-
-    const footerHeight = 90;
-
+    const footerHeight =
+        90;
 
     const qrSize =
         canvas.width;
 
-
     const outputWidth =
         qrSize +
         (padding * 2);
-
 
     const outputHeight =
         titleHeight +
@@ -708,36 +521,24 @@ function downloadGsQrCode() {
         footerHeight +
         (padding * 2);
 
-
     const outputCanvas =
         document.createElement(
             'canvas'
         );
 
-
     outputCanvas.width =
         outputWidth;
 
-
     outputCanvas.height =
         outputHeight;
-
 
     const ctx =
         outputCanvas.getContext(
             '2d'
         );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | BACKGROUND
-    |--------------------------------------------------------------------------
-    */
-
     ctx.fillStyle =
         '#ffffff';
-
 
     ctx.fillRect(
         0,
@@ -746,24 +547,14 @@ function downloadGsQrCode() {
         outputHeight
     );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | JUDUL
-    |--------------------------------------------------------------------------
-    */
-
     ctx.fillStyle =
         '#222222';
-
 
     ctx.textAlign =
         'center';
 
-
     ctx.font =
         'bold 28px Arial';
-
 
     ctx.fillText(
         kodeGs,
@@ -771,10 +562,8 @@ function downloadGsQrCode() {
         40
     );
 
-
     ctx.font =
         '18px Arial';
-
 
     ctx.fillText(
         platNomor,
@@ -782,29 +571,14 @@ function downloadGsQrCode() {
         68
     );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | QR
-    |--------------------------------------------------------------------------
-    */
-
     ctx.drawImage(
         canvas,
         padding,
         titleHeight + padding
     );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | FOOTER
-    |--------------------------------------------------------------------------
-    */
-
     ctx.font =
         '16px Arial';
-
 
     ctx.fillText(
         currentGsQrIsGeneral
@@ -814,16 +588,8 @@ function downloadGsQrCode() {
         outputHeight - 45
     );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | URL PENDEK
-    |--------------------------------------------------------------------------
-    */
-
     ctx.font =
         '11px Arial';
-
 
     ctx.fillText(
         'Scan QR menggunakan kamera HP',
@@ -831,33 +597,22 @@ function downloadGsQrCode() {
         outputHeight - 20
     );
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | DOWNLOAD
-    |--------------------------------------------------------------------------
-    */
-
     const link =
         document.createElement(
             'a'
         );
-
 
     link.download =
         'QR-' +
         kodeGs +
         '.png';
 
-
     link.href =
         outputCanvas.toDataURL(
             'image/png'
         );
 
-
     link.click();
-
 }
 
 </script>
