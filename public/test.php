@@ -13,12 +13,28 @@ try {
 
     echo "STEP 3: Laravel app created\n";
 
-    $app->make(\Illuminate\Contracts\Console\Kernel::class);
+    $kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
 
-    echo "STEP 4: Laravel kernel OK\n";
+    echo "STEP 4: HTTP kernel OK\n";
+
+    $request = \Illuminate\Http\Request::create(
+        '/test-laravel',
+        'GET'
+    );
+
+    echo "STEP 5: Request created\n";
+
+    $response = $kernel->handle($request);
+
+    echo "STEP 6: Request handled\n";
+    echo "STATUS: " . $response->getStatusCode() . "\n";
+    echo "CONTENT:\n";
+    echo $response->getContent();
+
+    $kernel->terminate($request, $response);
 
 } catch (\Throwable $e) {
-    echo "LARAVEL ERROR\n";
+    echo "\nLARAVEL ERROR\n";
     echo "CLASS: " . get_class($e) . "\n";
     echo "MESSAGE: " . $e->getMessage() . "\n";
     echo "FILE: " . $e->getFile() . "\n";
