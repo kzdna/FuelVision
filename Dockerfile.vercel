@@ -39,7 +39,6 @@ RUN mkdir -p storage/framework/cache \
 RUN php artisan storage:link || true
 
 ENV SERVER_NAME=:80
-ENV PORT=80
 
 EXPOSE 80
 
