@@ -12,6 +12,10 @@ use App\Http\Controllers\MonitoringBulananController;
 use App\Http\Controllers\StandarKonsumsiBbmController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test-laravel', function () {
+    return 'LARAVEL OK';
+});
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])
         ->name('login');
