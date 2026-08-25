@@ -13,6 +13,14 @@ use App\Http\Controllers\StandarKonsumsiBbmController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/test-laravel', function () {
+    return response()->json([
+        'status' => 'Laravel OK',
+        'php' => PHP_VERSION,
+        'app_env' => app()->environment(),
+    ]);
+});
+
+Route::get('/test-laravel', function () {
     return 'LARAVEL OK';
 });
 
