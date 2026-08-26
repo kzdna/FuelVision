@@ -19,34 +19,44 @@ class AuthController extends Controller
     public function login(LoginRequest $request): RedirectResponse
     {
         try {
+            Log::info('LOGIN STEP 1: request received');
+
             $credentials = $request->only('email', 'password');
 
-            Log::info('LOGIN STEP 1', [
-                'email' => $request->email,
+            Log::info('LOGIN STEP 2: credentials received', [
+                'email' => $credentials['email'] ?? null,
             ]);
 
-            if (! Auth::attempt($credentials)) {
-                Log::info('LOGIN STEP 2: AUTH FAILED');
+            $attempt = Auth::attempt($credentials);
+
+            Log::info('LOGIN STEP 3: Auth attempt completed', [
+                'result' => $attempt,
+            ]);
+
+            if (! $attempt) {
+                Log::warning('LOGIN STEP 4: authentication failed');
 
                 return back()
-                    ->withErrors([
-                        'email' => 'Email atau password tidak valid.'
-                    ])
+                    ->withErrors(['email' => 'Email atau password tidak valid.'])
                     ->onlyInput('email');
             }
 
-            Log::info('LOGIN STEP 2: AUTH SUCCESS');
+            Log::info('LOGIN STEP 5: authentication successful');
 
             $user = Auth::user();
 
-            Log::info('LOGIN STEP 3: USER LOADED', [
-                'user_id' => $user->id,
-                'email' => $user->email,
-                'role_id' => $user->role_id,
+            Log::info('LOGIN STEP 6: user retrieved', [
+                'user_id' => $user?->id,
+                'email' => $user?->email,
+                'status' => $user?->status,
             ]);
 
+            if (! $user) {
+                throw new \RuntimeException('Auth::user() returned null after successful authentication.');
+            }
+
             if (! $user->status) {
-                Log::info('LOGIN STEP 4: USER INACTIVE');
+                Log::warning('LOGIN STEP 7: user inactive');
 
                 Auth::logout();
 
@@ -55,25 +65,25 @@ class AuthController extends Controller
                 ]);
             }
 
-            Log::info('LOGIN STEP 4: USER ACTIVE');
+            Log::info('LOGIN STEP 8: regenerating session');
 
             $request->session()->regenerate();
 
-            Log::info('LOGIN STEP 5: SESSION REGENERATED');
+            Log::info('LOGIN STEP 9: session regenerated');
 
             $roleName = $user->role?->nama_role;
 
-            Log::info('LOGIN STEP 6: ROLE LOADED', [
+            Log::info('LOGIN STEP 10: role retrieved', [
                 'role' => $roleName,
             ]);
 
-            $path = $this->redirectPathForRole($roleName);
+            $redirectPath = $this->redirectPathForRole($roleName);
 
-            Log::info('LOGIN STEP 7: REDIRECT PATH', [
-                'path' => $path,
+            Log::info('LOGIN STEP 11: redirect path determined', [
+                'path' => $redirectPath,
             ]);
 
-            return redirect($path);
+            return redirect($redirectPath);
 
         } catch (\Throwable $e) {
             Log::error('LOGIN ERROR', [
@@ -84,7 +94,7 @@ class AuthController extends Controller
                 'trace' => $e->getTraceAsString(),
             ]);
 
-            throw $e;
+            abort(500, 'LOGIN ERROR: ' . $e->getMessage());
         }
     }
 
