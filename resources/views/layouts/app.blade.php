@@ -62,7 +62,7 @@
 
     @else
 
-        <main>
+        <main class="fv-login-page">
             @yield('content')
         </main>
 

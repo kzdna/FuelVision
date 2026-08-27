@@ -1065,4 +1065,19 @@ h6 {
     .fv-kpi-card {
         padding: 0.9rem;
     }
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+    .fv-login-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .fv-login-page > .container {
+        width: 100%;
+    }
 }
