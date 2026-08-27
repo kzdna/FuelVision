@@ -10,11 +10,17 @@
 
     --fv-radius: 10px;
     --fv-radius-sm: 6px;
-    --fv-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+    --fv-shadow: 0 1px 2px rgba(0, 0, 0, 0.04),
+        0 1px 3px rgba(0, 0, 0, 0.06);
 
     --fv-sidebar-width: 250px;
     --fv-navbar-height: 64px;
 }
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
 
 * {
     box-sizing: border-box;
@@ -57,9 +63,15 @@ h6 {
     display: block;
 }
 
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
 .fv-sidebar {
     width: var(--fv-sidebar-width);
     height: 100vh;
+
     background: var(--fv-card);
     border-right: 1px solid var(--fv-border);
 
@@ -137,96 +149,88 @@ h6 {
     padding: 0.9rem 0.75rem;
 }
 
-.fv-nav-section-label {
-    font-size: 0.68rem;
 
-    font-weight: 700;
+/* =========================================================
+   SIDEBAR LINKS
+   ========================================================= */
 
-    letter-spacing: 0.06em;
-
-    text-transform: uppercase;
-
-    color: #9CA3AF;
-
-    padding: 0.9rem 0.6rem 0.35rem;
+.fv-sidebar-section {
+    margin-bottom: 1.25rem;
 }
 
-.fv-nav-item {
+.fv-sidebar-section-title {
+    padding: 0 0.75rem;
+    margin-bottom: 0.45rem;
+
+    color: var(--fv-text-muted);
+
+    font-size: 0.68rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.fv-sidebar-link {
+    width: 100%;
+
     display: flex;
     align-items: center;
 
     gap: 0.65rem;
 
-    width: 100%;
+    padding: 0.65rem 0.75rem;
 
-    padding: 0.55rem 0.7rem;
+    margin-bottom: 0.2rem;
 
     border-radius: var(--fv-radius-sm);
 
-    color: #4B5563;
+    color: var(--fv-text-muted);
 
     text-decoration: none;
 
-    font-size: 0.875rem;
-
+    font-size: 0.85rem;
     font-weight: 500;
-
-    margin-bottom: 2px;
 
     transition:
         background-color 0.12s ease,
         color 0.12s ease;
 }
 
-.fv-nav-item i {
-    font-size: 1.05rem;
+.fv-sidebar-link i {
+    width: 18px;
 
-    width: 20px;
-    min-width: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    text-align: center;
+    font-size: 0.95rem;
 
     flex-shrink: 0;
 }
 
-.fv-nav-item:hover {
+.fv-sidebar-link:hover {
     background: #F3F4F6;
     color: var(--fv-dark);
 }
 
-.fv-nav-item.active {
+.fv-sidebar-link.active {
     background: rgba(245, 130, 32, 0.10);
-
     color: var(--fv-primary-dark);
-
     font-weight: 600;
 }
 
-.fv-nav-item.active i {
+.fv-sidebar-link.active i {
     color: var(--fv-primary);
-}
-
-.fv-nav-item.fv-nav-disabled {
-    color: #C1C5CB;
-
-    cursor: default;
-
-    pointer-events: none;
-}
-
-.fv-nav-sub {
-    padding-left: 1.9rem;
 }
 
 .fv-soon-badge {
     margin-left: auto;
 
     font-size: 0.62rem;
-
     font-weight: 700;
 
     text-transform: uppercase;
-
     letter-spacing: 0.03em;
 
     color: #9CA3AF;
@@ -247,13 +251,11 @@ h6 {
     width: calc(100% - var(--fv-sidebar-width));
 
     min-width: 0;
-
     min-height: 100vh;
 
     margin-left: var(--fv-sidebar-width);
 
     display: flex;
-
     flex-direction: column;
 }
 
@@ -266,7 +268,6 @@ h6 {
     width: 100%;
 
     height: var(--fv-navbar-height);
-
     min-height: var(--fv-navbar-height);
 
     background: var(--fv-card);
@@ -274,15 +275,12 @@ h6 {
     border-bottom: 1px solid var(--fv-border);
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 
     padding: 0 1.5rem;
 
     position: sticky;
-
     top: 0;
 
     z-index: 1020;
@@ -292,7 +290,6 @@ h6 {
     display: none;
 
     position: relative;
-
     z-index: 1055;
 
     width: 42px;
@@ -304,7 +301,6 @@ h6 {
     border: none;
 
     background: transparent;
-
     color: var(--fv-dark);
 
     font-size: 1.5rem;
@@ -355,7 +351,6 @@ h6 {
     border-radius: 50%;
 
     background: var(--fv-dark);
-
     color: #fff;
 
     display: flex;
@@ -372,7 +367,6 @@ h6 {
 
 .fv-user-name {
     font-size: 0.85rem;
-
     font-weight: 600;
 
     color: var(--fv-dark);
@@ -390,7 +384,6 @@ h6 {
     border: 1px solid var(--fv-border);
 
     background: #fff;
-
     color: var(--fv-text-muted);
 
     border-radius: var(--fv-radius-sm);
@@ -398,7 +391,6 @@ h6 {
     padding: 0.4rem 0.55rem;
 
     font-size: 1rem;
-
     line-height: 1;
 
     transition:
@@ -410,7 +402,6 @@ h6 {
 
 .fv-logout-btn:hover {
     background: #FEF2F2;
-
     color: #DC2626;
 }
 
@@ -421,9 +412,7 @@ h6 {
 
 .fv-content {
     width: 100%;
-
     max-width: 100%;
-
     min-width: 0;
 
     padding: 1.75rem;
@@ -466,7 +455,6 @@ h6 {
     display: flex;
 
     justify-content: space-between;
-
     align-items: flex-start;
 
     flex-wrap: wrap;
@@ -595,62 +583,28 @@ h6 {
 
 .fv-table-wrap .table {
     margin-bottom: 0;
-
-    font-size: 0.875rem;
 }
 
-.fv-table-wrap thead th {
-    background: #FAFAFA;
+.fv-table-wrap .table thead th {
+    background: #F8F9FA;
 
-    color: var(--fv-text-muted);
+    color: var(--fv-dark);
+
+    font-size: 0.78rem;
 
     font-weight: 600;
 
-    font-size: 0.74rem;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.04em;
-
     border-bottom: 1px solid var(--fv-border);
-
-    padding: 0.75rem 1rem;
 
     white-space: nowrap;
 }
 
-.fv-table-wrap tbody td {
-    padding: 0.7rem 1rem;
+.fv-table-wrap .table tbody td {
+    font-size: 0.82rem;
 
     vertical-align: middle;
 
-    border-bottom: 1px solid var(--fv-border);
-
     color: var(--fv-text);
-}
-
-.fv-table-wrap tbody tr:last-child td {
-    border-bottom: none;
-}
-
-.fv-table-wrap tbody tr:hover {
-    background: #FAFAFA;
-}
-
-.fv-table-toolbar {
-    padding: 0.9rem 1rem;
-
-    border-bottom: 1px solid var(--fv-border);
-
-    display: flex;
-
-    gap: 0.75rem;
-
-    flex-wrap: wrap;
-
-    align-items: center;
-
-    justify-content: space-between;
 }
 
 
@@ -659,20 +613,21 @@ h6 {
    ========================================================= */
 
 .btn-fv-primary {
-    background-color: var(--fv-primary);
+    background: var(--fv-primary);
 
-    border-color: var(--fv-primary);
+    border: 1px solid var(--fv-primary);
 
     color: #fff;
 
-    font-weight: 500;
+    border-radius: var(--fv-radius-sm);
+
+    font-weight: 600;
 
     font-size: 0.85rem;
 }
 
-.btn-fv-primary:hover,
-.btn-fv-primary:focus {
-    background-color: var(--fv-primary-dark);
+.btn-fv-primary:hover {
+    background: var(--fv-primary-dark);
 
     border-color: var(--fv-primary-dark);
 
@@ -680,11 +635,13 @@ h6 {
 }
 
 .btn-fv-secondary {
-    background-color: #fff;
+    background: #fff;
 
-    border-color: var(--fv-border);
+    border: 1px solid var(--fv-border);
 
     color: var(--fv-text);
+
+    border-radius: var(--fv-radius-sm);
 
     font-weight: 500;
 
@@ -692,7 +649,7 @@ h6 {
 }
 
 .btn-fv-secondary:hover {
-    background-color: #F3F4F6;
+    background: #F3F4F6;
 
     color: var(--fv-text);
 
@@ -738,31 +695,26 @@ h6 {
 
 .fv-badge-success {
     background: #ECFDF3;
-
     color: #027A48;
 }
 
 .fv-badge-warning {
     background: #FFFAEB;
-
     color: #B54708;
 }
 
 .fv-badge-danger {
     background: #FEF3F2;
-
     color: #B42318;
 }
 
 .fv-badge-neutral {
     background: #F3F4F6;
-
     color: #4B5563;
 }
 
 .fv-badge-accent {
     background: rgba(245, 130, 32, 0.12);
-
     color: var(--fv-primary-dark);
 }
 
@@ -795,33 +747,46 @@ h6 {
 
 .fv-login-page {
     width: 100%;
+
     min-height: 100vh;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
+    padding: 20px 16px;
+
+    margin: 0;
+
+    overflow-x: hidden;
 }
 
 .fv-login-page > .container {
     width: 100%;
+
     max-width: 500px;
 
     margin: 0 auto;
+
     padding: 0;
+
+    transform: none;
 }
 
 .fv-login-page .row {
     width: 100%;
+
     margin: 0;
 
     display: flex;
+
     justify-content: center;
 }
 
 .fv-login-page .col-md-5 {
     width: 100%;
+
     max-width: 500px;
 
     flex: 0 0 100%;
@@ -833,9 +798,12 @@ h6 {
 .fv-login-page .card {
     width: 100%;
 
+    max-width: 500px;
+
     background: var(--fv-card);
 
     border: 1px solid var(--fv-border);
+
     border-radius: var(--fv-radius);
 
     box-shadow: var(--fv-shadow);
@@ -861,34 +829,9 @@ h6 {
     margin-bottom: 0.4rem;
 }
 
-.fv-login-page .form-control {
-    width: 100%;
-}
-
+.fv-login-page .form-control,
 .fv-login-page .btn {
     width: 100%;
-}
-
-
-/* =========================================================
-   RESPONSIVE - LOGIN
-   ========================================================= */
-
-@media (max-width: 767.98px) {
-
-    .fv-login-page {
-        padding: 20px 16px;
-    }
-
-    .fv-login-page > .container {
-        max-width: 100%;
-    }
-
-    .fv-login-page .col-md-5 {
-        width: 100%;
-        max-width: 100%;
-    }
-
 }
 
 
@@ -1130,6 +1073,127 @@ h6 {
     .row {
         --bs-gutter-x: 1rem;
     }
+
+    /* -----------------------------------------------------
+       FORM TRANSAKSI BBM
+       ----------------------------------------------------- */
+
+    .fv-content .container {
+        width: 100%;
+
+        max-width: 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .fv-content .container-fluid {
+        width: 100%;
+
+        max-width: 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .fv-content .row {
+        width: 100%;
+
+        max-width: 100%;
+
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .fv-content .row > [class*="col-"] {
+        width: 100%;
+
+        max-width: 100%;
+
+        flex: 0 0 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .fv-content .card {
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+    .fv-content .card-body {
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+    .fv-content .form-control,
+    .fv-content .form-select,
+    .fv-content textarea {
+        width: 100%;
+
+        max-width: 100%;
+    }
+
+    /* -----------------------------------------------------
+       LOGIN
+       ----------------------------------------------------- */
+
+    .fv-login-page {
+        width: 100%;
+
+        min-height: 100vh;
+
+        padding: 16px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        overflow-x: hidden;
+    }
+
+    .fv-login-page > .container {
+        width: 100%;
+
+        max-width: 500px;
+
+        margin: 0 auto;
+
+        padding: 0;
+
+        transform: none;
+    }
+
+    .fv-login-page .row {
+        width: 100%;
+
+        margin: 0;
+
+        display: flex;
+
+        justify-content: center;
+    }
+
+    .fv-login-page .col-md-5 {
+        width: 100%;
+
+        max-width: 500px;
+
+        flex: 0 0 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .fv-login-page .card {
+        width: 100%;
+
+        max-width: 500px;
+    }
 }
 
 
@@ -1153,6 +1217,7 @@ h6 {
 
     .fv-sidebar {
         width: 82vw;
+
         max-width: 300px;
     }
 
@@ -1167,203 +1232,34 @@ h6 {
     .fv-kpi-card {
         padding: 0.9rem;
     }
-}
 
-
-/* =========================================================
-   MOBILE FIX - FORM TRANSAKSI BBM
-   ========================================================= */
-
-@media (max-width: 767.98px) {
-
-    .fv-content .row {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        margin-left: 0;
-        margin-right: 0;
+    /* Form transaksi */
+    .fv-content .card-body {
+        padding: 1rem;
     }
 
-    .fv-content .row > [class*="col-"] {
-        width: 100%;
-        max-width: 100%;
-        flex: 0 0 100%;
-        padding-left: 0;
-        padding-right: 0;
+    .fv-content .form-label {
+        font-size: 0.85rem;
     }
 
-    .fv-content .container {
-        width: 100%;
-        max-width: 100%;
-        padding-left: 0;
-        padding-right: 0;
+    .fv-content .form-text {
+        font-size: 0.78rem;
     }
 
-    .fv-content .fv-card,
-    .fv-content .card {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .fv-content .form-control,
-    .fv-content .form-select {
-        width: 100%;
-        max-width: 100%;
-    }
-}
-
-
-/* =========================================================
-   LOGIN PAGE - FINAL
-   ========================================================= */
-
-.fv-login-page {
-    width: 100%;
-    height: 100dvh;
-    min-height: 100vh;
-    min-height: 100dvh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 20px 16px;
-    margin: 0;
-
-    overflow: hidden;
-}
-
-.fv-login-page > .container {
-    width: 100%;
-    max-width: 500px;
-
-    margin: 0 auto;
-    padding: 0;
-}
-
-.fv-login-page .row {
-    width: 100%;
-    margin: 0;
-
-    display: flex;
-    justify-content: center;
-}
-
-.fv-login-page .col-md-5 {
-    width: 100%;
-    max-width: 500px;
-
-    flex: 0 0 100%;
-
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.fv-login-page .card {
-    width: 100%;
-    max-width: 500px;
-
-    background: var(--fv-card);
-
-    border: 1px solid var(--fv-border);
-    border-radius: var(--fv-radius);
-
-    box-shadow: var(--fv-shadow);
-}
-
-.fv-login-page .card-body {
-    padding: 1.25rem 1.35rem;
-}
-
-.fv-login-page h3 {
-    color: var(--fv-dark);
-    font-weight: 600;
-
-    margin-bottom: 1.5rem;
-}
-
-.fv-login-page .form-label {
-    color: var(--fv-dark);
-
-    font-size: 0.875rem;
-
-    margin-bottom: 0.4rem;
-}
-
-.fv-login-page .form-control,
-.fv-login-page .btn {
-    width: 100%;
-}
-
-
-/* =========================================================
-   LOGIN PAGE - MOBILE
-   ========================================================= */
-
-@media (max-width: 767.98px) {
-
+    /* Login */
     .fv-login-page {
-        width: 100%;
-        height: 100dvh;
-        min-height: 100dvh;
+        min-height: 100vh;
 
-        padding: 16px;
-        margin: 0;
-
-        overflow: hidden;
-    }
-
-    .fv-login-page > .container {
-        width: 100%;
-        max-width: 100%;
-
-        margin: 0;
-        padding: 0;
-    }
-
-    .fv-login-page .row {
-        width: 100%;
-        margin: 0;
-    }
-
-    .fv-login-page .col-md-5 {
-        width: 100%;
-        max-width: 100%;
-
-        flex: 0 0 100%;
-    }
-
-    .fv-login-page .card {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .fv-login-page .card-body {
-        padding: 1.15rem 1rem;
-    }
-}
-
-
-/* =========================================================
-   LOGIN PAGE - VERY SMALL SCREEN
-   ========================================================= */
-
-@media (max-width: 575.98px) and (max-height: 700px) {
-
-    .fv-login-page {
         padding: 12px;
     }
 
     .fv-login-page .card-body {
-        padding: 1rem;
+        padding: 1.15rem;
     }
 
     .fv-login-page h3 {
-        margin-bottom: 1.1rem;
         font-size: 1.35rem;
-    }
 
-    .fv-login-page .mb-3 {
-        margin-bottom: 0.8rem !important;
+        margin-bottom: 1.25rem;
     }
 }
