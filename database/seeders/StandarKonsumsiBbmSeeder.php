@@ -20,6 +20,8 @@ class StandarKonsumsiBbmSeeder extends Seeder
             'B/U PMC BAGONG',
             'B/U PMC JB HDX TRITON SPV',
             'BUS HAICE',
+            'B/U PMC INNOVA ZENIX',
+            'B/U PMC NEW TRITON',
         ];
 
         foreach ($data as $jenisKendaraan) {

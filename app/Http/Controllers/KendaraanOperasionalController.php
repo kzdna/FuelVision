@@ -22,6 +22,8 @@ class KendaraanOperasionalController extends Controller
             'B/U PMC BAGONG',
             'B/U PMC JB HDX TRITON SPV',
             'BUS HAICE',
+            'B/U PMC INNOVA ZENIX',
+            'B/U PMC NEW TRITON',
         ];
     }
 
