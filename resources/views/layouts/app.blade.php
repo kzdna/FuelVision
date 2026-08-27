@@ -32,7 +32,7 @@
     >
 
     <link
-        href="{{ secure_asset('css/fuelvision.css') }}"
+        href="{{ asset('css/fuelvision.css') }}"
         rel="stylesheet"
     >
 
