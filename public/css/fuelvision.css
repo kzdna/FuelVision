@@ -794,19 +794,124 @@ h6 {
    ========================================================= */
 
 .fv-login-page {
+    width: 100%;
     min-height: 100vh;
 
     display: flex;
-
-    align-items: flex-start;
-
+    align-items: center;
     justify-content: center;
 
-    padding-top: 80px;
+    padding: 40px 20px;
 }
 
 .fv-login-page > .container {
     width: 100%;
+    max-width: 500px;
+
+    margin: 0 auto;
+    padding: 0;
+}
+
+.fv-login-page .row {
+    width: 100%;
+    margin: 0;
+
+    display: flex;
+    justify-content: center;
+}
+
+.fv-login-page .col-md-5 {
+    width: 100%;
+    max-width: 500px;
+
+    flex: 0 0 100%;
+
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.fv-login-page .card {
+    width: 100%;
+
+    background: var(--fv-card);
+
+    border: 1px solid var(--fv-border);
+    border-radius: var(--fv-radius);
+    box-shadow: var(--fv-shadow);
+}
+
+.fv-login-page .card-body {
+    padding: 1.25rem 1.35rem;
+}
+
+.fv-login-page h3 {
+    color: var(--fv-dark);
+    font-weight: 600;
+
+    margin-bottom: 1.5rem;
+}
+
+.fv-login-page .form-label {
+    color: var(--fv-dark);
+
+    font-size: 0.875rem;
+    margin-bottom: 0.4rem;
+}
+
+.fv-login-page .form-control {
+    width: 100%;
+}
+
+.fv-login-page .btn {
+    width: 100%;
+}
+
+
+/* =========================================================
+   RESPONSIVE - LOGIN
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .fv-login-page {
+        padding: 30px 16px;
+    }
+
+    .fv-login-page > .container {
+        max-width: 100%;
+    }
+
+    .fv-login-page .col-md-5 {
+        width: 100%;
+        max-width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - LOGIN
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    .fv-login-page {
+        padding: 30px 16px;
+    }
+
+    .fv-login-page > .container {
+        max-width: 100%;
+
+        padding-left: 0;
+        padding-right: 0;
+
+    }
+
+    .fv-login-page .col-md-5 {
+        width: 100%;
+        max-width: 100%;
+    }
+
 }
 
 
