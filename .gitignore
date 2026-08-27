@@ -21,3 +21,14 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+.vercel
+.env*
+
+# Temporary deployment/testing files
+FuelVision-hosting.zip
+FuelVision.sql
+login-prod.html
+public/health.php
+standar_konsumsi_backup.txt
+users_backup.txt

@@ -75,14 +75,6 @@
 
             @endif
 
-            <a
-                href="{{ route('monitoring.bulanan.ai-insight') }}"
-                class="fv-nav-item {{ request()->routeIs('monitoring.bulanan.ai-insight') ? 'active' : '' }}"
-            >
-                <i class="bi bi-stars"></i>
-                <span>AI Insight</span>
-            </a>
-
             @if ($fvCanAdminFinanceOnly)
 
                 <div class="fv-nav-section-label">

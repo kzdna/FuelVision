@@ -1,0 +1,64 @@
+FROM node:22-alpine AS frontend
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY resources ./resources
+COPY vite.config.js ./
+
+RUN npm run build
+
+FROM dunglas/frankenphp:php8.2-bookworm
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libpng-dev \
+    libicu-dev \
+    libonig-dev \
+    && docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    intl \
+    zip \
+    opcache \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+COPY . /app
+
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction
+
+COPY --from=frontend /app/public/build /app/public/build
+
+RUN php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear
+
+RUN mkdir -p \
+    storage/framework/cache \
+    storage/framework/sessions \
+    storage/framework/views \
+    storage/logs \
+    && chmod -R 775 storage bootstrap/cache
+
+RUN php artisan storage:link || true
+
+ENV SERVER_NAME=:80
+ENV PORT=80
+
+EXPOSE 80
+
+COPY Caddyfile /etc/frankenphp/Caddyfile
+
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile", "--adapter", "caddyfile"]

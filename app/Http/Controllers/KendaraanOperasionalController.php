@@ -9,49 +9,40 @@ use Illuminate\View\View;
 
 class KendaraanOperasionalController extends Controller
 {
-    /**
-     * Daftar jenis kendaraan yang digunakan di database.
-     */
     private function jenisKendaraan(): array
     {
         return [
-            'B/U FMC JB HDX TRITON',
+            'B/U PMC JB HDX TRITON',
             'LV BOX HDX TRITON',
             'B/U FIELD HDX TRITON',
             'B/U FIELD HILUX',
             'B/U GOH HDX TRITON',
             'LV OPS ASC HDX TRITON',
             'LV OPS P2U HILUX',
-            'B/U FMC BAGONG',
-            'B/U FMC JB HDX TRITON SPV',
+            'B/U PMC BAGONG',
+            'B/U PMC JB HDX TRITON SPV',
             'BUS HAICE',
         ];
     }
 
-    /**
-     * Daftar departemen dan cost center yang sesuai.
-     */
     private function departemenCostCenter(): array
     {
         return [
-            'Service FMC' => [
-                '01-STI-FMC',
+            'Administration' => [
+                '01-STI-ADM',
             ],
             'Spare Part' => [
                 '01-STI-WHS',
             ],
-            'Service Non FMC' => [
-                '01-STI-Non FMC',
+            'Service PMC' => [
+                '01-STI-PMC',
             ],
-            'Administration' => [
-                '01-STI-ADM',
+            'Service Non PMC' => [
+                '01-STI-Non PMC',
             ],
         ];
     }
 
-    /**
-     * Menampilkan daftar kendaraan operasional.
-     */
     public function index(): View
     {
         $kendaraan = KendaraanOperasional::latest('id')->get();
@@ -61,9 +52,6 @@ class KendaraanOperasionalController extends Controller
         ]);
     }
 
-    /**
-     * Menampilkan form tambah kendaraan.
-     */
     public function create(): View
     {
         return view('kendaraan_operasional.form', [
@@ -73,9 +61,6 @@ class KendaraanOperasionalController extends Controller
         ]);
     }
 
-    /**
-     * Menyimpan kendaraan baru.
-     */
     public function store(Request $request): RedirectResponse
     {
         $departemenCostCenter = $this->departemenCostCenter();
@@ -87,27 +72,23 @@ class KendaraanOperasionalController extends Controller
                 'max:20',
                 'unique:kendaraan_operasional,kode_unit',
             ],
-
             'plat_nomor' => [
                 'required',
                 'string',
                 'max:30',
                 'unique:kendaraan_operasional,plat_nomor',
             ],
-
             'jenis_kendaraan' => [
                 'required',
                 'string',
                 'max:100',
                 'in:' . implode(',', $this->jenisKendaraan()),
             ],
-
             'departemen' => [
                 'required',
                 'string',
                 'in:' . implode(',', array_keys($departemenCostCenter)),
             ],
-
             'cost_center' => [
                 'required',
                 'string',
@@ -118,14 +99,12 @@ class KendaraanOperasionalController extends Controller
                     )
                 ),
             ],
-
             'status' => [
                 'required',
                 'boolean',
             ],
         ]);
 
-        // Pastikan Cost Center sesuai dengan Departemen.
         if (
             ! in_array(
                 $validated['cost_center'],
@@ -140,7 +119,6 @@ class KendaraanOperasionalController extends Controller
                 ->withInput();
         }
 
-        // QR Code menggunakan kode unit kendaraan.
         $validated['qr_code'] = $validated['kode_unit'];
 
         KendaraanOperasional::create($validated);
@@ -153,9 +131,6 @@ class KendaraanOperasionalController extends Controller
             );
     }
 
-    /**
-     * Menampilkan form edit kendaraan.
-     */
     public function edit(KendaraanOperasional $kendaraanOperasional): View
     {
         return view('kendaraan_operasional.form', [
@@ -165,9 +140,6 @@ class KendaraanOperasionalController extends Controller
         ]);
     }
 
-    /**
-     * Memperbarui kendaraan.
-     */
     public function update(
         Request $request,
         KendaraanOperasional $kendaraanOperasional
@@ -182,7 +154,6 @@ class KendaraanOperasionalController extends Controller
                 'unique:kendaraan_operasional,kode_unit,' .
                     $kendaraanOperasional->id,
             ],
-
             'plat_nomor' => [
                 'required',
                 'string',
@@ -190,20 +161,17 @@ class KendaraanOperasionalController extends Controller
                 'unique:kendaraan_operasional,plat_nomor,' .
                     $kendaraanOperasional->id,
             ],
-
             'jenis_kendaraan' => [
                 'required',
                 'string',
                 'max:100',
                 'in:' . implode(',', $this->jenisKendaraan()),
             ],
-
             'departemen' => [
                 'required',
                 'string',
                 'in:' . implode(',', array_keys($departemenCostCenter)),
             ],
-
             'cost_center' => [
                 'required',
                 'string',
@@ -214,14 +182,12 @@ class KendaraanOperasionalController extends Controller
                     )
                 ),
             ],
-
             'status' => [
                 'required',
                 'boolean',
             ],
         ]);
 
-        // Pastikan Cost Center sesuai dengan Departemen.
         if (
             ! in_array(
                 $validated['cost_center'],
@@ -236,7 +202,6 @@ class KendaraanOperasionalController extends Controller
                 ->withInput();
         }
 
-        // QR Code mengikuti kode unit.
         $validated['qr_code'] = $validated['kode_unit'];
 
         $kendaraanOperasional->update($validated);
@@ -249,9 +214,6 @@ class KendaraanOperasionalController extends Controller
             );
     }
 
-    /**
-     * Menghapus kendaraan.
-     */
     public function destroy(
         KendaraanOperasional $kendaraanOperasional
     ): RedirectResponse {
