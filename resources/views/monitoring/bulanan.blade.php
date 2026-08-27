@@ -71,7 +71,7 @@
             action="{{ route('monitoring.bulanan') }}"
         >
 
-            <div class="row g-3 align-items-end">
+            <div class="row g-3 align-items-start">
 
                 <div class="col-lg-4 col-md-6">
 
