@@ -63,7 +63,7 @@
             action="{{ route('monitoring.mingguan') }}"
         >
 
-            <div class="row g-3 align-items-end">
+            <div class="row g-3 align-items-start">
 
                 <div class="col-lg-4 col-md-6">
 
@@ -187,8 +187,7 @@
                 </div>
 
 
-                <div class="col-lg-1 col-md-6">
-
+                <div class="col-lg-1 col-md-6 d-flex align-items-end pt-4">
                     <button
                         type="submit"
                         class="btn btn-primary w-100"
@@ -196,7 +195,6 @@
                     >
                         <i class="bi bi-funnel"></i>
                     </button>
-
                 </div>
 
             </div>
