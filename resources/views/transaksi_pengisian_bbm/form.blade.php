@@ -4,13 +4,17 @@
 
 @section('content')
 
-<div class="mb-4">
-    <h2>Tambah Transaksi Pengisian BBM</h2>
+@section('content')
 
-    <p class="text-muted mb-0">
-        Masukkan data pengisian BBM kendaraan.
-    </p>
-</div>
+<div class="fv-transaksi-page">
+
+    <div class="mb-4 fv-transaksi-header">
+        <h2>Tambah Transaksi Pengisian BBM</h2>
+
+        <p class="text-muted mb-0">
+            Masukkan data pengisian BBM kendaraan.
+        </p>
+    </div>
 
 @if ($errors->any())
     <div class="alert alert-danger">
