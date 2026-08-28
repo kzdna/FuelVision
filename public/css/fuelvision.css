@@ -1299,11 +1299,12 @@ h6 {
     }
 
     /* =========================================================
-   MOBILE FIX - HALAMAN FORM TRANSAKSI BBM
-   ========================================================= */
+    FIX - FORM TRANSAKSI BBM MOBILE
+    ========================================================= */
 
     @media (max-width: 767.98px) {
 
+        /* Container utama halaman */
         .fv-content {
             display: block !important;
             width: 100% !important;
@@ -1312,15 +1313,17 @@ h6 {
             padding: 1rem !important;
             margin: 0 !important;
             overflow-x: hidden !important;
+            box-sizing: border-box !important;
         }
 
-        /* Judul halaman */
+        /* Judul "Tambah Transaksi Pengisian BBM" */
         .fv-content > .mb-4 {
             display: block !important;
             width: 100% !important;
             max-width: 100% !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
+            box-sizing: border-box !important;
         }
 
         /* Card form */
@@ -1330,65 +1333,108 @@ h6 {
             max-width: 100% !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
+            box-sizing: border-box !important;
         }
 
-        /* Isi card */
+        /* Card body */
         .fv-content > .card > .card-body {
             display: block !important;
             width: 100% !important;
             max-width: 100% !important;
             padding: 1rem !important;
-        }
-
-        /* Form */
-        .fv-content > .card form {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-        }
-
-        /* Row di dalam form */
-        .fv-content > .card form > .row {
-            display: flex !important;
-            flex-direction: column !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
-        /* Semua field menjadi satu kolom */
-        .fv-content > .card form > .row > [class*="col-"] {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            flex: 0 0 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-
-        /* Input dan select */
-        .fv-content > .card form .form-control,
-        .fv-content > .card form .form-select,
-        .fv-content > .card form textarea {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
             box-sizing: border-box !important;
         }
 
-        /* Alert QR */
-        .fv-content > .card .alert {
+        /* Form */
+        .fv-content > .card > .card-body > form {
+            display: block !important;
             width: 100% !important;
             max-width: 100% !important;
+            margin: 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Row Bootstrap di dalam form */
+        .fv-content > .card > .card-body > form > .row {
+            display: flex !important;
+            flex-direction: column !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+
+            --bs-gutter-x: 0 !important;
+            --bs-gutter-y: 0 !important;
+
+            box-sizing: border-box !important;
+        }
+
+        /* Semua col-md-6 menjadi satu kolom */
+        .fv-content > .card > .card-body > form > .row > [class*="col-"] {
+            display: block !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
+            flex: 0 0 100% !important;
+
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+
+            box-sizing: border-box !important;
+        }
+
+        /* Input */
+        .fv-content > .card input.form-control,
+        .fv-content > .card select.form-select,
+        .fv-content > .card textarea.form-control {
+            display: block !important;
+
+            width: 100% !important;
+            max-width: 100% !important;
+
             box-sizing: border-box !important;
         }
 
         /* Tombol */
-        .fv-content > .card form .d-flex {
+        .fv-content > .card .d-flex {
             width: 100% !important;
             max-width: 100% !important;
-            flex-wrap: wrap !important;
+
+            box-sizing: border-box !important;
+        }
+    }
+
+
+    /* =========================================================
+    FIX - FORM TRANSAKSI BBM MOBILE KECIL
+    ========================================================= */
+
+    @media (max-width: 575.98px) {
+
+        .fv-content {
+            padding: 0.85rem !important;
+        }
+
+        .fv-content > .card > .card-body {
+            padding: 0.9rem !important;
+        }
+
+        .fv-content > .card > .card-body > form > .row {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .fv-content > .card > .card-body > form > .row > [class*="col-"] {
+            width: 100% !important;
+            max-width: 100% !important;
+
+            flex-basis: 100% !important;
+
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
     }
 }
