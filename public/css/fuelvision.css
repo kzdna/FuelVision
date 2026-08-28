@@ -965,19 +965,20 @@ h6 {
         max-width: 100%;
     }
 
-    .fv-content .row {
+    .fv-content > .container {
         width: 100%;
         max-width: 100%;
-
+        padding-left: 0;
+        padding-right: 0;
         margin-left: 0;
         margin-right: 0;
     }
 
-    .fv-content .row > [class*="col-"] {
-        width: 100%;
-        max-width: 100%;
-
-        flex: 0 0 100%;
+    .fv-content > .container > .row {
+        width: auto;
+        max-width: none;
+        margin-left: calc(-0.5 * var(--bs-gutter-x));
+        margin-right: calc(-0.5 * var(--bs-gutter-x));
     }
 
     .fv-content .form-control,
