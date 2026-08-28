@@ -828,16 +828,13 @@ h6 {
     body {
         width: 100%;
         min-width: 0;
-
         overflow-x: hidden;
     }
 
     .fv-app {
         width: 100%;
         min-height: 100vh;
-
         display: block;
-
         overflow-x: hidden;
     }
 
@@ -845,7 +842,6 @@ h6 {
         width: 100%;
         min-width: 0;
         min-height: 100vh;
-
         margin-left: 0;
 
         display: flex;
@@ -854,12 +850,10 @@ h6 {
 
     .fv-navbar {
         width: 100%;
-
         min-height: var(--fv-navbar-height);
         height: auto;
 
         padding: 0.7rem 0.85rem;
-
         gap: 0.5rem;
     }
 
@@ -876,29 +870,23 @@ h6 {
         font-size: 1.5rem;
 
         z-index: 1055;
-
         touch-action: manipulation;
     }
 
     .fv-navbar-title {
         min-width: 0;
-
         flex: 1;
 
         overflow: hidden;
-
         text-overflow: ellipsis;
-
         white-space: nowrap;
 
         font-size: 0.9rem;
-
         line-height: 1.3;
     }
 
     .fv-navbar-user {
         gap: 0.4rem;
-
         flex-shrink: 0;
     }
 
@@ -925,7 +913,6 @@ h6 {
     .fv-page-header {
         width: 100%;
         max-width: 100%;
-
         margin-bottom: 1rem;
     }
 
@@ -950,7 +937,6 @@ h6 {
         max-width: 100%;
 
         overflow-x: auto;
-
         -webkit-overflow-scrolling: touch;
     }
 
@@ -965,20 +951,26 @@ h6 {
         max-width: 100%;
     }
 
-    .fv-content > .container {
+    /* Paksa layout form menjadi 1 kolom di mobile */
+    .fv-content .row {
         width: 100%;
         max-width: 100%;
-        padding-left: 0;
-        padding-right: 0;
+
         margin-left: 0;
         margin-right: 0;
+
+        display: flex;
+        flex-direction: column;
     }
 
-    .fv-content > .container > .row {
-        width: auto;
-        max-width: none;
-        margin-left: calc(-0.5 * var(--bs-gutter-x));
-        margin-right: calc(-0.5 * var(--bs-gutter-x));
+    .fv-content .row > [class*="col-"] {
+        width: 100%;
+        max-width: 100%;
+
+        flex: 0 0 100%;
+
+        margin-left: 0;
+        margin-right: 0;
     }
 
     .fv-content .form-control,
@@ -986,6 +978,7 @@ h6 {
     .fv-content textarea {
         width: 100%;
         max-width: 100%;
+        box-sizing: border-box;
     }
 
     .fv-content > .card {
@@ -1303,5 +1296,99 @@ h6 {
 
     .fv-login-page .mb-3 {
         margin-bottom: 0.75rem !important;
+    }
+
+    /* =========================================================
+   MOBILE FIX - HALAMAN FORM TRANSAKSI BBM
+   ========================================================= */
+
+    @media (max-width: 767.98px) {
+
+        .fv-content {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            padding: 1rem !important;
+            margin: 0 !important;
+            overflow-x: hidden !important;
+        }
+
+        /* Judul halaman */
+        .fv-content > .mb-4 {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        /* Card form */
+        .fv-content > .card {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        /* Isi card */
+        .fv-content > .card > .card-body {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 1rem !important;
+        }
+
+        /* Form */
+        .fv-content > .card form {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        /* Row di dalam form */
+        .fv-content > .card form > .row {
+            display: flex !important;
+            flex-direction: column !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        /* Semua field menjadi satu kolom */
+        .fv-content > .card form > .row > [class*="col-"] {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+
+        /* Input dan select */
+        .fv-content > .card form .form-control,
+        .fv-content > .card form .form-select,
+        .fv-content > .card form textarea {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Alert QR */
+        .fv-content > .card .alert {
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Tombol */
+        .fv-content > .card form .d-flex {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex-wrap: wrap !important;
+        }
     }
 }
