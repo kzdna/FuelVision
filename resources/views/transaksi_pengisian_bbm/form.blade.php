@@ -175,36 +175,77 @@
                         Kendaraan GS
                     </label>
 
-                    <select
-                        id="kendaraan_gs_id"
-                        name="kendaraan_gs_id"
-                        class="form-select"
-                        {{ $isGs ? 'disabled' : '' }}
-                    >
+                    @if ($isGs)
 
-                        <option value="">
-                            -- Tidak Menggunakan Kendaraan GS --
-                        </option>
+                        {{-- 
+                            Jika QR berasal dari kendaraan GS,
+                            tampilkan GS yang terdeteksi dan kunci pilihan.
+                        --}}
+                        <select
+                            id="kendaraan_gs_id"
+                            name="kendaraan_gs_id"
+                            class="form-select"
+                            disabled
+                        >
 
-                        @foreach ($kendaraanGs as $item)
+                            @foreach ($kendaraanGs as $item)
 
-                            <option
-                                value="{{ $item->id }}"
-                                @selected(
-                                    $selectedGs == $item->id
-                                )
-                            >
-                                {{ $item->kode_gs }}
+                                @if ($selectedGs == $item->id)
 
-                                @if ($item->plat_nomor)
-                                    - {{ $item->plat_nomor }}
+                                    <option value="{{ $item->id }}" selected>
+                                        {{ $item->kode_gs }}
+
+                                        @if ($item->plat_nomor)
+                                            - {{ $item->plat_nomor }}
+                                        @endif
+                                    </option>
+
                                 @endif
 
+                            @endforeach
+
+                        </select>
+
+                        {{-- 
+                            Karena select disabled tidak ikut terkirim saat submit,
+                            kirim ID GS melalui hidden input.
+                        --}}
+                        @if ($selectedGs)
+
+                            <input
+                                type="hidden"
+                                name="kendaraan_gs_id"
+                                value="{{ $selectedGs }}"
+                            >
+
+                        @endif
+
+                    @else
+
+                        {{-- 
+                            Jika QR berasal dari kendaraan operasional,
+                            GS tidak boleh dipilih.
+                        --}}
+                        <select
+                            id="kendaraan_gs_id"
+                            class="form-select"
+                            disabled
+                        >
+
+                            <option value="" selected>
+                                -- Tidak Menggunakan Kendaraan GS --
                             </option>
 
-                        @endforeach
+                        </select>
 
-                    </select>
+                        {{-- Pastikan database menerima NULL --}}
+                        <input
+                            type="hidden"
+                            name="kendaraan_gs_id"
+                            value=""
+                        >
+
+                    @endif
 
                     @if ($isGs && $selectedGs)
 
