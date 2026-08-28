@@ -1298,141 +1298,145 @@ h6 {
         margin-bottom: 0.75rem !important;
     }
 
-    /* =========================================================
-    FINAL MOBILE LAYOUT - TRANSAKSI BBM
-    ========================================================= */
+}
 
-    @media screen and (max-width: 767.98px) {
 
-        .fv-content {
-            display: block !important;
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
+/* =========================================================
+   FINAL MOBILE LAYOUT - TRANSAKSI BBM
+   Judul di atas, card di bawah
+   ========================================================= */
 
-            margin: 0 !important;
-            padding: 1rem !important;
+@media screen and (max-width: 767.98px) {
 
-            box-sizing: border-box !important;
-        }
+    /* Pastikan area content selalu tersusun vertikal */
+    .fv-content {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        box-sizing: border-box !important;
+    }
 
-        /* Semua elemen langsung di dalam content
-        disusun vertikal */
-        .fv-content > * {
-            display: block !important;
+    /* Semua elemen utama di dalam content turun ke bawah */
+    .fv-content > * {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        float: none !important;
+        position: static !important;
+        box-sizing: border-box !important;
+    }
 
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
+    /* JUDUL: harus berada paling atas */
+    .fv-content > .mb-4 {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 0 1rem 0 !important;
+        padding: 0 !important;
+        clear: both !important;
+    }
 
-            float: none !important;
-            position: static !important;
+    .fv-content > .mb-4 h2 {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 0 0.35rem 0 !important;
+    }
 
-            box-sizing: border-box !important;
-        }
+    .fv-content > .mb-4 p {
+        display: block !important;
+        width: 100% !important;
+        margin: 0 !important;
+    }
 
-        /* JUDUL */
-        .fv-content > .mb-4 {
-            margin: 0 0 1rem 0 !important;
-            padding: 0 !important;
-        }
+    /* ALERT ERROR */
+    .fv-content > .alert {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        box-sizing: border-box !important;
+    }
 
-        .fv-content > .mb-4 h2 {
-            display: block !important;
-            width: 100% !important;
+    /* CARD FORM: berada di bawah judul / alert */
+    .fv-content > .card {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        clear: both !important;
+        box-sizing: border-box !important;
+    }
 
-            margin: 0 0 0.35rem 0 !important;
-        }
+    .fv-content > .card > .card-body {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        box-sizing: border-box !important;
+    }
 
-        .fv-content > .mb-4 p {
-            display: block !important;
-            width: 100% !important;
+    /* FORM */
+    .fv-content > .card form {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+    }
 
-            margin: 0 !important;
-        }
+    /* FIELD FORM: satu kolom */
+    .fv-content > .card form > .row {
+        display: flex !important;
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 
-        /* ALERT QR CODE
-        HARUS berada di bawah judul */
-        .fv-content > .alert {
-            display: block !important;
+    .fv-content > .card form > .row > [class*="col-"] {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex: 0 0 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        box-sizing: border-box !important;
+    }
 
-            width: 100% !important;
-            max-width: 100% !important;
+    /* INPUT */
+    .fv-content > .card form .form-control,
+    .fv-content > .card form .form-select,
+    .fv-content > .card form textarea {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
 
-            margin-top: 0 !important;
-            margin-bottom: 1rem !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-
-            float: none !important;
-            position: static !important;
-
-            box-sizing: border-box !important;
-        }
-
-        /* CARD FORM
-        HARUS berada di bawah alert */
-        .fv-content > .card {
-            display: block !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-
-            margin: 0 !important;
-
-            float: none !important;
-            position: static !important;
-
-            box-sizing: border-box !important;
-        }
-
-        .fv-content > .card > .card-body {
-            display: block !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-
-            padding: 1rem !important;
-
-            box-sizing: border-box !important;
-        }
-
-        /* FORM */
-        .fv-content > .card form {
-            display: block !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-        }
-
-        /* ROW FIELD */
-        .fv-content > .card form > .row {
-            display: flex !important;
-            flex-direction: column !important;
-            flex-wrap: nowrap !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
-        .fv-content > .card form > .row > [class*="col-"] {
-            display: block !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-
-            flex: 0 0 100% !important;
-
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-
-            box-sizing: border-box !important;
-        }
+    /* BUTTON */
+    .fv-content > .card form > .d-flex {
+        display: flex !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        box-sizing: border-box !important;
     }
 }
