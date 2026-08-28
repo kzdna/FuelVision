@@ -1302,83 +1302,17 @@ h6 {
 
 
 /* =========================================================
-   FIX FINAL - HALAMAN TRANSAKSI BBM MOBILE
-   JUDUL WAJIB DI ATAS CARD
+   FINAL MOBILE FIX - TRANSAKSI BBM
+   Judul di atas, card di bawah
    ========================================================= */
 
 @media screen and (max-width: 767.98px) {
 
-    /* Content halaman harus satu kolom */
-    .fv-main .fv-content {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-    }
-
-    /* Judul halaman */
-    .fv-main .fv-content > .mb-4 {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-
-        margin: 0 0 1rem 0 !important;
-        padding: 0 !important;
-
-        float: none !important;
-        position: static !important;
-        clear: both !important;
-    }
-
-    .fv-main .fv-content > .mb-4 h2 {
-        display: block !important;
-        width: 100% !important;
-
-        margin: 0 0 0.35rem 0 !important;
-    }
-
-    .fv-main .fv-content > .mb-4 p {
-        display: block !important;
-        width: 100% !important;
-
-        margin: 0 !important;
-    }
-
-    /* Alert error kalau ada */
-    .fv-main .fv-content > .alert {
-        display: block !important;
-        width: 100% !important;
-        max-width: 100% !important;
-
-        float: none !important;
-        position: static !important;
-        clear: both !important;
-
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
-
-    /* CARD FORM HARUS DI BAWAH JUDUL */
-    .fv-main .fv-content > .card {
-        display: block !important;
-
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-
-        margin: 0 !important;
-        padding: 0 !important;
-
-        float: none !important;
-        position: static !important;
-        clear: both !important;
-
-        flex: none !important;
-        order: initial !important;
-    }
-
-    /* Isi card */
-    .fv-main .fv-content > .card > .card-body {
+    /*
+     * CONTENT UTAMA
+     * Semua isi halaman disusun vertikal.
+     */
+    .fv-content {
         display: block !important;
 
         width: 100% !important;
@@ -1387,10 +1321,125 @@ h6 {
 
         margin: 0 !important;
         padding: 1rem !important;
+
+        box-sizing: border-box !important;
+
+        overflow-x: hidden !important;
     }
 
-    /* Form */
-    .fv-main .fv-content > .card form {
+
+    /*
+     * SEMUA ELEMEN LANGSUNG DI DALAM FV-CONTENT
+     * harus turun ke bawah.
+     */
+    .fv-content > * {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+
+        float: none !important;
+
+        position: static !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /*
+     * JUDUL:
+     *
+     * Tambah Transaksi Pengisian BBM
+     * Masukkan data pengisian BBM kendaraan.
+     *
+     * HARUS BERADA DI ATAS CARD.
+     */
+    .fv-content > .mb-4 {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 0 1rem 0 !important;
+        padding: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    .fv-content > .mb-4 h2 {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 0 0.35rem 0 !important;
+
+        font-size: 1.25rem !important;
+        line-height: 1.3 !important;
+    }
+
+
+    .fv-content > .mb-4 p {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+
+        font-size: 0.85rem !important;
+    }
+
+
+    /*
+     * CARD FORM
+     *
+     * Card harus berada DI BAWAH judul.
+     */
+    .fv-content > .card {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    .fv-content > .card > .card-body {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        padding: 1rem !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /*
+     * ALERT QR CODE
+     */
+    .fv-content > .card .alert {
+        width: 100% !important;
+        max-width: 100% !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /*
+     * FORM
+     */
+    .fv-content > .card form {
         display: block !important;
 
         width: 100% !important;
@@ -1399,8 +1448,14 @@ h6 {
         margin: 0 !important;
     }
 
-    /* Row form jadi satu kolom */
-    .fv-main .fv-content > .card form > .row {
+
+    /*
+     * BARIS FIELD FORM
+     *
+     * Semua col-md-6 / col-md-12
+     * menjadi satu kolom.
+     */
+    .fv-content > .card form > .row {
         display: flex !important;
 
         flex-direction: column !important;
@@ -1411,9 +1466,15 @@ h6 {
 
         margin-left: 0 !important;
         margin-right: 0 !important;
+
+        box-sizing: border-box !important;
     }
 
-    .fv-main .fv-content > .card form > .row > [class*="col-"] {
+
+    /*
+     * KOLOM FORM
+     */
+    .fv-content > .card form > .row > [class*="col-"] {
         display: block !important;
 
         width: 100% !important;
@@ -1426,5 +1487,53 @@ h6 {
 
         padding-left: 0 !important;
         padding-right: 0 !important;
+
+        box-sizing: border-box !important;
     }
+
+
+    /*
+     * INPUT / SELECT / TEXTAREA
+     */
+    .fv-content > .card form .form-control,
+    .fv-content > .card form .form-select,
+    .fv-content > .card form textarea {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        box-sizing: border-box !important;
+    }
+
+
+    /*
+     * BUTTON
+     */
+    .fv-content > .card form button,
+    .fv-content > .card form .btn {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+}
+
+
+/* =========================================================
+   FINAL MOBILE - SMALL SCREEN
+   ========================================================= */
+
+@media screen and (max-width: 575.98px) {
+
+    .fv-content {
+        padding: 0.85rem !important;
+    }
+
+    .fv-content > .card > .card-body {
+        padding: 1rem !important;
+    }
+
+    .fv-content > .mb-4 h2 {
+        font-size: 1.2rem !important;
+    }
+
 }
