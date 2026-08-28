@@ -1299,22 +1299,10 @@ h6 {
     }
 
     /* =========================================================
-    FIX MOBILE - TRANSAKSI BBM
-    Judul harus di atas card
+    FINAL MOBILE LAYOUT - TRANSAKSI BBM
     ========================================================= */
 
     @media screen and (max-width: 767.98px) {
-
-        body {
-            overflow-x: hidden !important;
-        }
-
-        .fv-main {
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-            margin-left: 0 !important;
-        }
 
         .fv-content {
             display: block !important;
@@ -1328,71 +1316,62 @@ h6 {
             box-sizing: border-box !important;
         }
 
-        /* =====================================================
-        JUDUL HALAMAN
-        ===================================================== */
-
-        .fv-content > .mb-4 {
+        /* Semua elemen langsung di dalam content
+        disusun vertikal */
+        .fv-content > * {
             display: block !important;
 
             width: 100% !important;
             max-width: 100% !important;
             min-width: 0 !important;
 
-            margin: 0 0 1rem 0 !important;
-            padding: 0 !important;
-
-            position: relative !important;
-            left: auto !important;
-            right: auto !important;
-            top: auto !important;
-
             float: none !important;
-
-            flex: none !important;
-            order: initial !important;
+            position: static !important;
 
             box-sizing: border-box !important;
         }
 
+        /* JUDUL */
+        .fv-content > .mb-4 {
+            margin: 0 0 1rem 0 !important;
+            padding: 0 !important;
+        }
+
         .fv-content > .mb-4 h2 {
             display: block !important;
-
             width: 100% !important;
-            max-width: 100% !important;
 
             margin: 0 0 0.35rem 0 !important;
         }
 
         .fv-content > .mb-4 p {
             display: block !important;
-
             width: 100% !important;
-            max-width: 100% !important;
 
             margin: 0 !important;
         }
 
-        /* =====================================================
-        ALERT ERROR
-        ===================================================== */
-
+        /* ALERT QR CODE
+        HARUS berada di bawah judul */
         .fv-content > .alert {
             display: block !important;
 
             width: 100% !important;
             max-width: 100% !important;
 
+            margin-top: 0 !important;
+            margin-bottom: 1rem !important;
             margin-left: 0 !important;
             margin-right: 0 !important;
+
+            float: none !important;
+            position: static !important;
 
             box-sizing: border-box !important;
         }
 
-        /* =====================================================
-        CARD FORM
-        ===================================================== */
-
+        /* CARD FORM
+        HARUS berada di bawah alert */
         .fv-content > .card {
             display: block !important;
 
@@ -1401,17 +1380,9 @@ h6 {
             min-width: 0 !important;
 
             margin: 0 !important;
-            padding: 0 !important;
-
-            position: relative !important;
-            left: auto !important;
-            right: auto !important;
-            top: auto !important;
 
             float: none !important;
-
-            flex: none !important;
-            order: initial !important;
+            position: static !important;
 
             box-sizing: border-box !important;
         }
@@ -1423,39 +1394,28 @@ h6 {
             max-width: 100% !important;
             min-width: 0 !important;
 
-            margin: 0 !important;
             padding: 1rem !important;
 
             box-sizing: border-box !important;
         }
 
-        /* =====================================================
-        FORM
-        ===================================================== */
-
+        /* FORM */
         .fv-content > .card form {
             display: block !important;
 
             width: 100% !important;
             max-width: 100% !important;
             min-width: 0 !important;
-
-            margin: 0 !important;
         }
 
-        /* =====================================================
-        FIELD ROW
-        ===================================================== */
-
+        /* ROW FIELD */
         .fv-content > .card form > .row {
             display: flex !important;
+            flex-direction: column !important;
+            flex-wrap: nowrap !important;
 
             width: 100% !important;
             max-width: 100% !important;
-            min-width: 0 !important;
-
-            flex-direction: column !important;
-            flex-wrap: nowrap !important;
 
             margin-left: 0 !important;
             margin-right: 0 !important;
@@ -1466,47 +1426,11 @@ h6 {
 
             width: 100% !important;
             max-width: 100% !important;
-            min-width: 0 !important;
 
             flex: 0 0 100% !important;
 
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-
             padding-left: 0 !important;
             padding-right: 0 !important;
-
-            box-sizing: border-box !important;
-        }
-
-        /* =====================================================
-        INPUT
-        ===================================================== */
-
-        .fv-content > .card form .form-control,
-        .fv-content > .card form .form-select,
-        .fv-content > .card form textarea {
-            display: block !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-            min-width: 0 !important;
-
-            box-sizing: border-box !important;
-        }
-
-        /* =====================================================
-        BUTTON
-        ===================================================== */
-
-        .fv-content > .card form > .d-flex {
-            display: flex !important;
-
-            width: 100% !important;
-            max-width: 100% !important;
-
-            flex-direction: row !important;
-            flex-wrap: wrap !important;
 
             box-sizing: border-box !important;
         }
