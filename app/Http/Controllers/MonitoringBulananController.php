@@ -18,21 +18,21 @@ class MonitoringBulananController extends Controller
 {
     public function index(Request $request): View
     {
-        $data = $this->getMonitoringData($request);
+        $data = $this->getMonitoringData($request, false);
 
         return view('monitoring.bulanan', $data);
     }
 
     public function aiInsight(Request $request): View
     {
-        $data = $this->getMonitoringData($request);
+        $data = $this->getMonitoringData($request, true);
 
         return view('monitoring.ai-insight', $data);
     }
 
     public function downloadPdf(Request $request)
     {
-        $data = $this->getMonitoringData($request);
+        $data = $this->getMonitoringData($request, false);
 
         $pdf = Pdf::loadView(
             'monitoring.bulanan-pdf',
@@ -49,8 +49,16 @@ class MonitoringBulananController extends Controller
         return $pdf->download($namaFile);
     }
 
-    private function getMonitoringData(Request $request): array
-    {
+    private function getMonitoringData(
+        Request $request,
+        bool $includeAi = false
+    ): array {
+        /*
+        |--------------------------------------------------------------------------
+        | PERIODE BULAN
+        |--------------------------------------------------------------------------
+        */
+
         $tanggalMulai = $request->query('tanggal_mulai');
 
         if ($tanggalMulai) {
@@ -66,9 +74,32 @@ class MonitoringBulananController extends Controller
                 ->startOfMonth();
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | PENTING:
+        | Gunakan startOfDay() dan endOfDay() supaya transaksi pada tanggal
+        | terakhir bulan tetap ikut terbaca, termasuk jika kolom database
+        | menyimpan jam.
+        |--------------------------------------------------------------------------
+        */
+
         $akhirBulan = $awalBulan
             ->copy()
             ->endOfMonth();
+
+        $tanggalAwalQuery = $awalBulan
+            ->copy()
+            ->startOfDay();
+
+        $tanggalAkhirQuery = $akhirBulan
+            ->copy()
+            ->endOfDay();
+
+        /*
+        |--------------------------------------------------------------------------
+        | MASTER DATA
+        |--------------------------------------------------------------------------
+        */
 
         $kendaraanOperasional = KendaraanOperasional::aktif()
             ->orderBy('kode_unit')
@@ -82,6 +113,12 @@ class MonitoringBulananController extends Controller
             ->orderBy('jenis_bbm')
             ->get();
 
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER
+        |--------------------------------------------------------------------------
+        */
+
         $kendaraanFilter = $request->query(
             'kendaraan',
             'all'
@@ -92,14 +129,26 @@ class MonitoringBulananController extends Controller
             'all'
         );
 
+        /*
+        |--------------------------------------------------------------------------
+        | QUERY TRANSAKSI
+        |--------------------------------------------------------------------------
+        */
+
         $query = TransaksiPengisianBbm::with([
             'kendaraanOperasional',
             'kendaraanGs',
             'masterHargaBbmVendor',
         ])->whereBetween('tanggal_pengisian', [
-            $awalBulan,
-            $akhirBulan,
+            $tanggalAwalQuery,
+            $tanggalAkhirQuery,
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER KENDARAAN OPERASIONAL
+        |--------------------------------------------------------------------------
+        */
 
         if (
             $kendaraanFilter !== 'all' &&
@@ -120,6 +169,12 @@ class MonitoringBulananController extends Controller
             );
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER KENDARAAN GS
+        |--------------------------------------------------------------------------
+        */
+
         if (
             $kendaraanFilter !== 'all' &&
             str_starts_with(
@@ -139,6 +194,12 @@ class MonitoringBulananController extends Controller
             );
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | FILTER JENIS BBM
+        |--------------------------------------------------------------------------
+        */
+
         if ($jenisBbmFilter !== 'all') {
             $query->where(
                 'master_harga_bbm_vendor_id',
@@ -146,10 +207,22 @@ class MonitoringBulananController extends Controller
             );
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | AMBIL TRANSAKSI
+        |--------------------------------------------------------------------------
+        */
+
         $transaksi = $query
             ->orderBy('tanggal_pengisian')
             ->orderBy('id')
             ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | TOTAL
+        |--------------------------------------------------------------------------
+        */
 
         $totalTransaksi = $transaksi->count();
 
@@ -164,6 +237,12 @@ class MonitoringBulananController extends Controller
                 ? $totalLiter / $totalTransaksi
                 : 0;
 
+        /*
+        |--------------------------------------------------------------------------
+        | MONITORING PER KENDARAAN OPERASIONAL
+        |--------------------------------------------------------------------------
+        */
+
         $perKendaraan = $transaksi
             ->filter(function ($item) {
                 return $item->kendaraan_operasional_id !== null;
@@ -172,6 +251,7 @@ class MonitoringBulananController extends Controller
                 return $item->kendaraan_operasional_id;
             })
             ->map(function ($items) use ($awalBulan) {
+
                 $itemPertama = $items->first();
 
                 $kendaraanOperasional =
@@ -191,6 +271,12 @@ class MonitoringBulananController extends Controller
                 $totalBiaya =
                     (float) $items->sum('total_biaya');
 
+                /*
+                |--------------------------------------------------------------------------
+                | TRANSAKSI YANG MEMILIKI KM
+                |--------------------------------------------------------------------------
+                */
+
                 $transaksiDenganKm = $items
                     ->filter(function ($item) {
                         return $item->kilometer !== null;
@@ -209,7 +295,14 @@ class MonitoringBulananController extends Controller
                 $totalJarak = null;
                 $literUntukRasio = 0;
 
+                /*
+                |--------------------------------------------------------------------------
+                | JIKA ADA 2 ATAU LEBIH TRANSAKSI DENGAN KM
+                |--------------------------------------------------------------------------
+                */
+
                 if ($transaksiDenganKm->count() >= 2) {
+
                     $kmSebelumnya =
                         (float) $transaksiDenganKm
                             ->first()
@@ -231,13 +324,26 @@ class MonitoringBulananController extends Controller
                     } else {
                         $totalJarak = null;
                     }
-                } elseif (
-                    $transaksiDenganKm->count() === 1
-                ) {
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | JIKA HANYA ADA 1 TRANSAKSI DENGAN KM
+                |--------------------------------------------------------------------------
+                */
+
+                elseif ($transaksiDenganKm->count() === 1) {
+
                     $kmSekarang =
                         (float) $transaksiDenganKm
                             ->first()
                             ->kilometer;
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | CARI TRANSAKSI SEBELUM BULAN INI
+                    |--------------------------------------------------------------------------
+                    */
 
                     $transaksiSebelumnya =
                         TransaksiPengisianBbm::query()
@@ -248,18 +354,15 @@ class MonitoringBulananController extends Controller
                             ->where(
                                 'tanggal_pengisian',
                                 '<',
-                                $awalBulan
+                                $awalBulan->copy()->startOfMonth()
                             )
-                            ->whereNotNull(
-                                'kilometer'
-                            )
-                            ->orderByDesc(
-                                'tanggal_pengisian'
-                            )
+                            ->whereNotNull('kilometer')
+                            ->orderByDesc('tanggal_pengisian')
                             ->orderByDesc('id')
                             ->first();
 
                     if ($transaksiSebelumnya) {
+
                         $kmSebelumnya =
                             (float) $transaksiSebelumnya
                                 ->kilometer;
@@ -279,6 +382,12 @@ class MonitoringBulananController extends Controller
                     }
                 }
 
+                /*
+                |--------------------------------------------------------------------------
+                | RASIO AKTUAL
+                |--------------------------------------------------------------------------
+                */
+
                 $rasioAktual = null;
 
                 if (
@@ -290,6 +399,12 @@ class MonitoringBulananController extends Controller
                         $totalJarak /
                         $literUntukRasio;
                 }
+
+                /*
+                |--------------------------------------------------------------------------
+                | STANDAR KONSUMSI
+                |--------------------------------------------------------------------------
+                */
 
                 $standarKonsumsi = null;
 
@@ -311,6 +426,7 @@ class MonitoringBulananController extends Controller
                 $rasioStandarMax = null;
 
                 if ($standarKonsumsi) {
+
                     $rasioStandarMin =
                         $standarKonsumsi
                             ->standar_min_km_per_liter;
@@ -333,6 +449,12 @@ class MonitoringBulananController extends Controller
                 $rasioStandar =
                     $rasioStandarMin;
 
+                /*
+                |--------------------------------------------------------------------------
+                | EVALUASI
+                |--------------------------------------------------------------------------
+                */
+
                 $evaluasi = null;
 
                 if (
@@ -354,13 +476,18 @@ class MonitoringBulananController extends Controller
                         'Belum Dievaluasi';
                 }
 
+                /*
+                |--------------------------------------------------------------------------
+                | VARIAN PEMBOROSAN
+                |--------------------------------------------------------------------------
+                */
+
                 $varianPemborosan = 0;
 
                 if (
                     $rasioAktual !== null &&
                     $rasioStandarMin !== null &&
-                    $rasioAktual <
-                        $rasioStandarMin &&
+                    $rasioAktual < $rasioStandarMin &&
                     $totalJarak !== null &&
                     $rasioStandarMin > 0
                 ) {
@@ -376,11 +503,18 @@ class MonitoringBulananController extends Controller
                         );
                 }
 
+                /*
+                |--------------------------------------------------------------------------
+                | ESTIMASI BIAYA KERUGIAN
+                |--------------------------------------------------------------------------
+                */
+
                 $biayaKerugian = 0;
 
                 if (
                     $varianPemborosan > 0 &&
-                    $literUntukRasio > 0
+                    $literUntukRasio > 0 &&
+                    $totalLiter > 0
                 ) {
                     $hargaPerLiter =
                         $totalBiaya /
@@ -444,10 +578,14 @@ class MonitoringBulananController extends Controller
             ->sortBy('kendaraan')
             ->values();
 
+        /*
+        |--------------------------------------------------------------------------
+        | PERSENTASE PER KENDARAAN
+        |--------------------------------------------------------------------------
+        */
+
         $totalLiterSemuaKendaraan =
-            $perKendaraan->sum(
-                'total_liter'
-            );
+            $perKendaraan->sum('total_liter');
 
         $perKendaraan = $perKendaraan
             ->map(function ($item) use (
@@ -464,12 +602,17 @@ class MonitoringBulananController extends Controller
                 return $item;
             });
 
+        /*
+        |--------------------------------------------------------------------------
+        | PER JENIS KENDARAAN
+        |--------------------------------------------------------------------------
+        */
+
         $perJenisKendaraan =
             $transaksi
                 ->groupBy(function ($item) {
-                    if (
-                        $item->kendaraanOperasional
-                    ) {
+
+                    if ($item->kendaraanOperasional) {
                         return $item
                             ->kendaraanOperasional
                             ->jenis_kendaraan
@@ -488,16 +631,18 @@ class MonitoringBulananController extends Controller
                             $items->count(),
 
                         'total_liter' =>
-                            $items->sum(
-                                'jumlah_liter'
-                            ),
+                            $items->sum('jumlah_liter'),
 
                         'total_biaya' =>
-                            $items->sum(
-                                'total_biaya'
-                            ),
+                            $items->sum('total_biaya'),
                     ];
                 });
+
+        /*
+        |--------------------------------------------------------------------------
+        | PER JENIS BBM
+        |--------------------------------------------------------------------------
+        */
 
         $perBbm =
             $transaksi
@@ -512,20 +657,23 @@ class MonitoringBulananController extends Controller
                             $items->count(),
 
                         'total_liter' =>
-                            $items->sum(
-                                'jumlah_liter'
-                            ),
+                            $items->sum('jumlah_liter'),
 
                         'total_biaya' =>
-                            $items->sum(
-                                'total_biaya'
-                            ),
+                            $items->sum('total_biaya'),
                     ];
                 });
+
+        /*
+        |--------------------------------------------------------------------------
+        | PER DEPARTEMEN
+        |--------------------------------------------------------------------------
+        */
 
         $perDepartemen =
             $transaksi
                 ->groupBy(function ($item) {
+
                     $departemen = trim(
                         (string)
                         $item->departemen_snapshot
@@ -541,20 +689,23 @@ class MonitoringBulananController extends Controller
                             $items->count(),
 
                         'total_liter' =>
-                            $items->sum(
-                                'jumlah_liter'
-                            ),
+                            $items->sum('jumlah_liter'),
 
                         'total_biaya' =>
-                            $items->sum(
-                                'total_biaya'
-                            ),
+                            $items->sum('total_biaya'),
                     ];
                 });
+
+        /*
+        |--------------------------------------------------------------------------
+        | PER COST CENTER
+        |--------------------------------------------------------------------------
+        */
 
         $perCostCenter =
             $transaksi
                 ->groupBy(function ($item) {
+
                     $costCenter = trim(
                         (string)
                         $item->cost_center_snapshot
@@ -570,27 +721,29 @@ class MonitoringBulananController extends Controller
                             $items->count(),
 
                         'total_liter' =>
-                            $items->sum(
-                                'jumlah_liter'
-                            ),
+                            $items->sum('jumlah_liter'),
 
                         'total_biaya' =>
-                            $items->sum(
-                                'total_biaya'
-                            ),
+                            $items->sum('total_biaya'),
                     ];
                 });
+
+        /*
+        |--------------------------------------------------------------------------
+        | AI INSIGHT
+        |--------------------------------------------------------------------------
+        */
 
         $aiSummary = null;
         $aiError = null;
 
-        $apiKey =
-            env('GEMINI_API_KEY');
+        $apiKey = env('GEMINI_API_KEY');
 
         if (
             $apiKey &&
             $totalTransaksi > 0
         ) {
+
             $kendaraanSummary =
                 $perKendaraan
                     ->map(function ($item) {
@@ -725,6 +878,12 @@ class MonitoringBulananController extends Controller
                     ? 'Semua jenis BBM'
                     : $jenisBbmFilter;
 
+            /*
+            |--------------------------------------------------------------------------
+            | CACHE AI
+            |--------------------------------------------------------------------------
+            */
+
             $cacheKey =
                 'ai_insight_bbm_' .
                 md5(
@@ -753,6 +912,7 @@ class MonitoringBulananController extends Controller
                 Cache::get($cacheKey);
 
             if (! $aiSummary) {
+
                 $prompt =
                     'Anda adalah asisten analisis penggunaan BBM untuk sistem FuelVision.
 
@@ -846,6 +1006,7 @@ Format jawaban:
 Jawaban maksimal 5 paragraf.';
 
                 try {
+
                     $response =
                         Http::timeout(30)
                             ->withHeaders([
@@ -872,12 +1033,14 @@ Jawaban maksimal 5 paragraf.';
                             );
 
                     if ($response->successful()) {
+
                         $aiSummary =
                             $response->json(
                                 'candidates.0.content.parts.0.text'
                             );
 
                         if (! $aiSummary) {
+
                             $aiSummary =
                                 $this->generateLocalInsight(
                                     $totalTransaksi,
@@ -890,7 +1053,9 @@ Jawaban maksimal 5 paragraf.';
                                 );
 
                             $aiError = null;
+
                         } else {
+
                             Cache::put(
                                 $cacheKey,
                                 $aiSummary,
@@ -899,7 +1064,9 @@ Jawaban maksimal 5 paragraf.';
 
                             $aiError = null;
                         }
+
                     } else {
+
                         $aiSummary =
                             $this->generateLocalInsight(
                                 $totalTransaksi,
@@ -913,7 +1080,9 @@ Jawaban maksimal 5 paragraf.';
 
                         $aiError = null;
                     }
+
                 } catch (\Throwable $e) {
+
                     $aiSummary =
                         $this->generateLocalInsight(
                             $totalTransaksi,
@@ -928,11 +1097,14 @@ Jawaban maksimal 5 paragraf.';
                     $aiError = null;
                 }
             }
+
         } elseif (! $apiKey) {
+
             $aiError =
                 'GEMINI_API_KEY belum ditemukan di file .env.';
 
             if ($totalTransaksi > 0) {
+
                 $aiSummary =
                     $this->generateLocalInsight(
                         $totalTransaksi,
@@ -944,10 +1116,18 @@ Jawaban maksimal 5 paragraf.';
                         $perDepartemen
                     );
             }
+
         } elseif ($totalTransaksi <= 0) {
+
             $aiError =
                 'Tidak ada transaksi pada bulan dan filter yang dipilih.';
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | DATA UNTUK VIEW
+        |--------------------------------------------------------------------------
+        */
 
         return [
             'awalBulan' =>
@@ -1018,6 +1198,7 @@ Jawaban maksimal 5 paragraf.';
         $perBbm,
         $perDepartemen
     ): string {
+
         $kendaraanTidakWajar =
             $perKendaraan
                 ->filter(function ($item) {
@@ -1127,12 +1308,14 @@ Jawaban maksimal 5 paragraf.';
             '.';
 
         if ($kendaraanTidakWajar->count() > 0) {
+
             $daftarTidakWajar =
                 $kendaraanTidakWajar
                     ->map(function ($item) use (
                         $formatLiter,
                         $formatRupiah
                     ) {
+
                         $text =
                             $item['kendaraan'];
 
@@ -1140,6 +1323,7 @@ Jawaban maksimal 5 paragraf.';
                             $item['rasio_aktual'] !== null &&
                             $item['rasio_standar'] !== null
                         ) {
+
                             $text .=
                                 ' dengan rasio aktual ' .
                                 number_format(
@@ -1164,6 +1348,7 @@ Jawaban maksimal 5 paragraf.';
                             (float)
                             $item['varian_pemborosan'] > 0
                         ) {
+
                             $text .=
                                 ', pemborosan ' .
                                 $formatLiter(
@@ -1189,22 +1374,28 @@ Jawaban maksimal 5 paragraf.';
                 ' kendaraan dengan evaluasi tidak wajar, yaitu ' .
                 $daftarTidakWajar .
                 '.';
+
         } else {
+
             $insight[] =
                 '3. Evaluasi konsumsi: Tidak ditemukan kendaraan dengan konsumsi tidak wajar pada periode yang dipilih berdasarkan standar konsumsi yang tersedia.';
         }
 
         if ($bbmTerbesarText) {
+
             $insight[] =
                 '4. Jenis BBM: Jenis BBM dengan penggunaan terbesar adalah ' .
                 $bbmTerbesarText .
                 '.';
+
         } else {
+
             $insight[] =
                 '4. Jenis BBM: Belum terdapat data jenis BBM yang dapat dianalisis.';
         }
 
         if ($departemenTerbesarText) {
+
             $insight[] =
                 '5. Fokus Finance: Departemen dengan penggunaan BBM terbesar adalah ' .
                 $departemenTerbesarText .
@@ -1213,7 +1404,9 @@ Jawaban maksimal 5 paragraf.';
                 ' dengan estimasi biaya kerugian sebesar ' .
                 $formatRupiah($totalKerugian) .
                 '.';
+
         } else {
+
             $insight[] =
                 '5. Fokus Finance: Total pemborosan yang teridentifikasi sebesar ' .
                 $formatLiter($totalPemborosan) .
